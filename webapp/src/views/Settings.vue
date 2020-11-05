@@ -138,6 +138,7 @@
 .settings {
   height: 100vh;
   background-color: #F6F6F6;
+  overflow: auto;
 }
 
 .new-rule span svg {
