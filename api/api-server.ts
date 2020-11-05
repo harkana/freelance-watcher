@@ -20,6 +20,25 @@ export default class ApiServer {
         this.app = express();
 
         this.app.use(require("body-parser").json());
+        this.app.use("/", express.static("App"));
+        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+            const routes = [
+                "/about",
+                "/",
+                "/settings"
+            ];
+            const filtered = routes.filter((route) => route == req.path);
+
+            if (filtered.length == 1){
+                res.end(fs.readFileSync("./App/index.html"));
+            }
+            else {
+                next();
+            }
+        });
+        this.app.get("/", (req: express.Request, res: express.Response) => {
+            res.end(fs.readFileSync('./App/index.html'));
+        });
         this.mount();
     }
 

@@ -3,7 +3,7 @@ import { OfferPlatform } from "../models/Offers";
 import { OfferPlatformServiceImpl } from "../models/services/impl/OfferPlatformService";
 import { OfferPlatformService } from "../models/services/OfferPlaformService";
 
-@Route("/plaform")
+@Route("/api/plaform")
 export class OfferPlatformController extends Controller {
 
     offerPlaformService: OfferPlatformService;

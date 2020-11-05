@@ -1,5 +1,15 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <b-container>
+      <h1>About page</h1>
+    </b-container>
   </div>
 </template>
+<style lang="scss" scoped>
+h1 {
+  text-align: center;
+}
+.about {
+  height: 100vh;
+}
+</style>
