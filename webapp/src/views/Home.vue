@@ -9,7 +9,7 @@
     <b-container class="holder-data">
       <b-row>
         <b-col cols="4">
-          <section class="platforms-holder">
+          <section class="platforms-holder item-platform">
             <fieldset>
               <legend>
                 <h5>
@@ -44,7 +44,7 @@
           </section>
         </b-col>
         <b-col cols="8">
-          <section class="annonces-holder">
+          <section class="annonces-holder item-offer">
             <fieldset>
               <legend>
                 <h5>
@@ -141,6 +141,44 @@ section:hover h5 span {
   margin-bottom: 25px;
   margin-top: 17px;
   cursor: pointer;
+}
+
+.item-platform {
+  animation-name: platform-frame;
+  animation-duration: 1.9s;
+  animation-timing-function: ease-in;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  transform: translateY(800px);
+}
+
+.item-offer {
+  animation-name: offer-frame;
+  animation-duration: 1.9s;
+  animation-timing-function: ease-in;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  transform: translateY(800px);
+}
+
+@keyframes offer-frame {
+  from {
+    transform: translateY(800px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes platform-frame {
+  from {
+    transform: translateY(800px);
+  }
+
+  to {
+    transform: translateY(0px);
+  }
 }
 </style>
 
