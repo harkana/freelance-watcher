@@ -8,4 +8,4 @@ services:
             POSTGRES_DB: freelance_watcher
         container_name: freelance_watcher_db
         ports: 
-            - "5432:5432"
+            - "6666:5432"
