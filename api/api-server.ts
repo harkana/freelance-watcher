@@ -49,6 +49,7 @@ export default class ApiServer {
         (container.resolve('registerRoutes') as Function)(this.app);
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
             if (err.status == 400) {
+                console.log(err);
                 const fields: { [key: string]: { message: string; value: any } } = err.fields;
                 const arr = [];
 
@@ -83,9 +84,12 @@ export default class ApiServer {
             ],
             migrations: [
                 `${__dirname}/migrations/**/*.ts`
-            ]
+            ],
+            logging: true
         };
+        console.log("a");
         createConnection(opts).then(async (conn) => {
+            console.log("enter ?");
             await conn.runMigrations({
                 transaction: "all"
             });
@@ -94,6 +98,7 @@ export default class ApiServer {
                 console.log(`The server runs at http://${this.host}:${this.port}`);
             });
         }).catch((error) => {
+            console.log(error);
             console.log(`The server can't start: ${JSON.stringify(error)}`);
         });
     }

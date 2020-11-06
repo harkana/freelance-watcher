@@ -11,6 +11,7 @@ export class RootEntity {
     @BeforeInsert()
     createDate() {
         this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
 
     @BeforeUpdate()
@@ -26,18 +27,20 @@ export class RootEntity {
 export class PlatformSource extends RootEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     name: string;
 
     @OneToMany(_ => Offer, offer => offer.platform, {
-        lazy: true
+        lazy: true,
+        cascade: ["insert", "update"]
     })
     offers?: Array<Offer>;
 
     @OneToMany(_ => CronTask, cronTask => cronTask.platform, {
-        lazy: true
+        lazy: true,
+        cascade: ["insert", "update"]
     })
     tasks?: Array<CronTask>;
 
@@ -49,7 +52,7 @@ export class PlatformSource extends RootEntity {
 export class Offer extends RootEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     title: string;
@@ -71,9 +74,10 @@ export class Offer extends RootEntity {
         referencedColumnName: "id"
     })
     @ManyToOne(_ => PlatformSource, platform => platform.offers, {
-        eager: true
+        eager: true,
+        cascade: true
     })
-    platform: PlatformSource;
+    platform?: PlatformSource;
 
 }
 
@@ -83,7 +87,7 @@ export class Offer extends RootEntity {
 export class User extends RootEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     pseudo: string;
@@ -107,47 +111,52 @@ export class User extends RootEntity {
 export class CronTask extends RootEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @JoinColumn({
         name: "platformId",
         referencedColumnName: "id"
     })
     @ManyToOne(_ => PlatformSource, platform => platform.tasks, {
-        eager: true
+        eager: true,
+        cascade: true
     })
-    platform: PlatformSource;
+    platform?: PlatformSource;
 
     @JoinColumn({
         name: "userId",
         referencedColumnName: "id"
     })
-    @ManyToOne(_ => User, user => user.tasks)
+    @ManyToOne(_ => User, user => user.tasks, {
+        eager: true,
+        cascade: true
+    })
     user: User;
 
     @OneToMany(_ => CronTaskKeywords, cronTaskKeywords => cronTaskKeywords.cronTask, {
         lazy: true
     })
-    cronTaskKeywods?: Array<CronTaskKeywords>;
+    cronTaskKeywords?: Array<CronTaskKeywords>;
 
 }
 
 @Entity({
     name: "cron_task_keywords"
 })
-export class CronTaskKeywords {
+export class CronTaskKeywords extends RootEntity {
 
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @JoinColumn({
         name: "cronTaskId",
         referencedColumnName: "id"
     })
-    @ManyToOne(_ => CronTask, cronTask => cronTask.cronTaskKeywods, {
+    @ManyToOne(_ => CronTask, cronTask => cronTask.cronTaskKeywords, {
+        cascade: true,
         eager: true
     })
-    cronTask: CronTask;
+    cronTask?: CronTask;
 
     @Column()
     keyword: string;
