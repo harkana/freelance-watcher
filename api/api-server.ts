@@ -1,16 +1,16 @@
 import express from "express";
-import { RegisterRoutes } from "./build/routes"
 import { readFileSync } from "fs";
 import { absolutePath } from "swagger-ui-dist"
 import { createConnection } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
+import { container } from "./container";
 
 export default class ApiServer {
 
     port: number;
     host: string;
 
-    app: express.Application
+    app: express.Application;
 
     constructor(host: string, port: number) {
         this.host = host;
@@ -23,6 +23,11 @@ export default class ApiServer {
 
         this.app.use(require("body-parser").json());
         this.app.use("/", express.static("App"));
+
+        this.mount();
+    }
+
+    mount() {
         this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
             const routes = [
                 "/about",
@@ -41,11 +46,7 @@ export default class ApiServer {
         this.app.get("/", (req: express.Request, res: express.Response) => {
             res.end(readFileSync('./App/index.html'));
         });
-        this.mount();
-    }
-
-    mount() {
-        RegisterRoutes(this.app);
+        (container.resolve('registerRoutes') as Function)(this.app);
         this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
             if (err.status == 400) {
                 const fields: { [key: string]: { message: string; value: any } } = err.fields;
@@ -72,6 +73,7 @@ export default class ApiServer {
     }
 
     start() {
+        console.log(process.env.DB_URL);
         const opts: PostgresConnectionOptions = {
             type: "postgres",
             url: process.env.DB_URL,

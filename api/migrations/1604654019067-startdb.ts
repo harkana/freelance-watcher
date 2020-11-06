@@ -16,7 +16,7 @@ export class startdb1604654019067 implements MigrationInterface {
                 },
                 {
                     name: "name",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
@@ -47,17 +47,17 @@ export class startdb1604654019067 implements MigrationInterface {
                 },
                 {
                     name: "pseudo",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "email",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "password",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
@@ -88,27 +88,27 @@ export class startdb1604654019067 implements MigrationInterface {
                 },
                 {
                     name: "title",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "description",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "price",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "link",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
                     name: "targetId",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
@@ -203,7 +203,7 @@ export class startdb1604654019067 implements MigrationInterface {
                 },
                 {
                     name: "keyword",
-                    type: "string",
+                    type: "varchar",
                     isNullable: false
                 },
                 {
