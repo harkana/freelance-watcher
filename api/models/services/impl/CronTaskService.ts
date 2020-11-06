@@ -1,22 +1,39 @@
+import { EntityManager, getManager } from "typeorm";
 import { CronTask } from "../..";
 import { CronTaskService } from "../CronTaskService";
 
 export class CronTaskServiceImpl implements CronTaskService {
 
-    findAll(): CronTask[] {
-        throw new Error("Method not implemented.");
-    }
-    insert(offer: CronTask): CronTask {
-        throw new Error("Method not implemented.");
-    }
-    findOne(id: number): CronTask {
-        throw new Error("Method not implemented.");
-    }
-    update(offer: CronTask): CronTask {
-        throw new Error("Method not implemented.");
-    }
-    delete(offer: CronTask): boolean {
-        throw new Error("Method not implemented.");
+    private entityManager: EntityManager;
+
+    constructor() {
+        this.entityManager = getManager('app');
     }
 
+    async findAll(): Promise<CronTask[]> {
+        const tasks = await this.entityManager.find(CronTask);
+
+        return (tasks);
+    }
+    
+    async insert(cronTask: CronTask): Promise<CronTask> {
+        return (await this.entityManager.save(cronTask));
+    }
+
+    async findOne(id: number): Promise<CronTask> {
+        const task = await this.entityManager.findOne(CronTask, id);
+
+        return (task);
+    }
+
+    async update(cronTask: CronTask): Promise<CronTask> {
+        return (await this.entityManager.save(cronTask));
+    }
+
+    async delete(cronTask: CronTask): Promise<boolean> {
+        const result = await this.entityManager.delete(CronTask, cronTask.id);
+
+        return (result.affected > 0);
+    }
+    
 }

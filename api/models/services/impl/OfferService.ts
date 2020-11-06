@@ -1,22 +1,39 @@
 import { Offer } from "../..";
 import { OfferService } from "../OfferService";
+import { EntityManager, getManager } from "typeorm";
 
 export class OfferServiceImpl implements OfferService {
-    
-    findAll(): Offer[] {
-        throw new Error("Method not implemented.");
+
+    private entityManager: EntityManager;
+
+    constructor() {
+        this.entityManager = getManager('app');
     }
-    insert(offer: Offer): Offer {
-        throw new Error("Method not implemented.");
+
+    async findAll(): Promise<Offer[]> {
+        const offers = await this.entityManager.find(Offer);
+
+        return (offers);
     }
-    findOne(id: number): Offer {
-        throw new Error("Method not implemented.");
+
+    async insert(offer: Offer): Promise<Offer> {
+        return (await this.entityManager.save(offer));
     }
-    update(offer: Offer): Offer {
-        throw new Error("Method not implemented.");
+
+    async findOne(id: number): Promise<Offer> {
+        const offer = await this.entityManager.findOne(Offer, id);
+
+        return (offer);
     }
-    delete(offer: Offer): boolean {
-        throw new Error("Method not implemented.");
+
+    async update(offer: Offer): Promise<Offer> {
+        return (await this.entityManager.save(offer));
     }
-    
+
+    async delete(offer: Offer): Promise<boolean> {
+        const affected = await this.entityManager.delete(Offer, offer.id);
+
+        return (affected.affected > 0);
+    }
+
 }

@@ -1,22 +1,39 @@
-import { Platform } from "../..";
+import { PlatformSource } from "../..";
 import { PlatformService } from "../PlatformService";
+import { EntityManager, getManager } from "typeorm";
 
 export class PlatformServiceImpl implements PlatformService {
 
-    findAll(): Platform[] {
-        throw new Error("Method not implemented.");
+    private entityManager: EntityManager;
+
+    constructor() {
+        this.entityManager = getManager('app');
     }
-    insert(offer: Platform): Platform {
-        throw new Error("Method not implemented.");
+
+    async findAll(): Promise<PlatformSource[]> {
+        const platforms = await this.entityManager.find(PlatformSource);
+
+        return (platforms);
     }
-    findOne(id: number): Platform {
-        throw new Error("Method not implemented.");
+
+    async insert(platform: PlatformSource): Promise<PlatformSource> {
+        return (await this.entityManager.save(platform));
     }
-    update(offer: Platform): Platform {
-        throw new Error("Method not implemented.");
+
+    async findOne(id: number): Promise<PlatformSource> {
+        const platform = await this.entityManager.findOne(PlatformSource, id);
+
+        return (platform);
     }
-    delete(offer: Platform): boolean {
-        throw new Error("Method not implemented.");
+
+    async update(platform: PlatformSource): Promise<PlatformSource> {
+        return (await this.entityManager.save(platform));
+    }
+
+    async delete(platform: PlatformSource): Promise<boolean> {
+        const result = await this.entityManager.delete(PlatformSource, platform.id);
+
+        return (result.affected > 0);
     }
 
 }

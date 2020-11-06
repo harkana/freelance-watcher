@@ -10,7 +10,7 @@ import {
     SuccessResponse,
 } from "tsoa";
 
-@Route("/api/hello")
+@Route("/hello")
 export class HelloController extends Controller {
     constructor() {
         super();

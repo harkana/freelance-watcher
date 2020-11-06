@@ -1,9 +1,9 @@
 import { CronTask } from "..";
 
 export abstract class CronTaskService {
-    abstract findAll(): Array<CronTask>;
-    abstract insert(offer: CronTask): CronTask;
-    abstract findOne(id: number): CronTask;
-    abstract update(offer: CronTask): CronTask;
-    abstract delete(offer: CronTask): boolean;
+    abstract findAll(): Promise<Array<CronTask>>;
+    abstract insert(cronTask: CronTask): Promise<CronTask>;
+    abstract findOne(id: number): Promise<CronTask>;
+    abstract update(cronTask: CronTask): Promise<CronTask>;
+    abstract delete(cronTask: CronTask): Promise<boolean>;
 }

@@ -1,22 +1,44 @@
+import { EntityManager, getManager } from "typeorm";
 import { User } from "../..";
 import { UserService } from "../UserService";
 
 export class UserServiceImpl implements UserService {
+
+    private entityManager: EntityManager;
+
+    constructor() {
+        this.entityManager = getManager('app');
+    }
+
+    async findAll(): Promise<User[]> {
+        const users = await this.entityManager.find(User);
+
+        return (users);
+    }
+
+    async insert(user: User): Promise<User> {
+        const saved = await this.entityManager.save(user);
+
+        return (saved);
+    }
+
+    async findOne(id: number): Promise<User> {
+        const user = await this.entityManager.findOne(User, id);
+
+        return (user);
+    }
+
+    async update(user: User): Promise<User> {
+        const saved = await this.entityManager.save(user);
+
+        return (saved);
+    }
+
+    async delete(user: User): Promise<boolean> {
+        const result = await this.entityManager.delete(User, user.id);
     
-    findAll(): User[] {
-        throw new Error("Method not implemented.");
+        return (result.affected > 0);
     }
-    insert(offer: User): User {
-        throw new Error("Method not implemented.");
-    }
-    findOne(id: number): User {
-        throw new Error("Method not implemented.");
-    }
-    update(offer: User): User {
-        throw new Error("Method not implemented.");
-    }
-    delete(offer: User): boolean {
-        throw new Error("Method not implemented.");
-    }
-    
+
+
 }

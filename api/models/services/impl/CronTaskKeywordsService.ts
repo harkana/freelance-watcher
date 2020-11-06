@@ -1,22 +1,38 @@
+import { EntityManager, getManager } from "typeorm";
 import { CronTaskKeywords } from "../..";
 import { CronTaskKeywordsService } from "../CronTaskKeywordsService";
 
 export class CronTaskKeywordsServiceImpl implements CronTaskKeywordsService {
 
-    findAll(): CronTaskKeywords[] {
-        throw new Error("Method not implemented.");
+    private entityManager: EntityManager;
+
+    constructor() {
+        this.entityManager = getManager('app');
     }
-    insert(offer: CronTaskKeywords): CronTaskKeywords {
-        throw new Error("Method not implemented.");
+
+    async findAll(): Promise<CronTaskKeywords[]> {
+        const keywords = await this.entityManager.find(CronTaskKeywords);
+
+        return (keywords);
     }
-    findOne(id: number): CronTaskKeywords {
-        throw new Error("Method not implemented.");
+
+    async insert(cronTaskKeywords: CronTaskKeywords): Promise<CronTaskKeywords> {
+        return (await this.entityManager.save(cronTaskKeywords));
     }
-    update(offer: CronTaskKeywords): CronTaskKeywords {
-        throw new Error("Method not implemented.");
+
+    async findOne(id: number): Promise<CronTaskKeywords> {
+        return (await this.entityManager.findOne(CronTaskKeywords, id));
     }
-    delete(offer: CronTaskKeywords): boolean {
-        throw new Error("Method not implemented.");
+
+    async update(cronTaskKeywords: CronTaskKeywords): Promise<CronTaskKeywords> {
+        return (await this.entityManager.save(cronTaskKeywords));
     }
+
+    async delete(cronTaskKeywords: CronTaskKeywords): Promise<boolean> {
+        const result = await this.entityManager.delete(CronTaskKeywords, cronTaskKeywords.id);
+
+        return (result.affected > 0);
+    }
+
 
 }

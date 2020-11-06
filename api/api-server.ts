@@ -75,6 +75,7 @@ export default class ApiServer {
     start() {
         console.log(process.env.DB_URL);
         const opts: PostgresConnectionOptions = {
+            name: "app",
             type: "postgres",
             url: process.env.DB_URL,
             entities: [
@@ -92,8 +93,8 @@ export default class ApiServer {
             this.app.listen(this.port, this.host, () => {
                 console.log(`The server runs at http://${this.host}:${this.port}`);
             });
-        }).catch(() => {
-            console.log("The server can't start.");
+        }).catch((error) => {
+            console.log(`The server can't start: ${JSON.stringify(error)}`);
         });
     }
 
