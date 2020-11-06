@@ -3,10 +3,10 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneT
 export class RootEntity {
 
     @Column()
-    createdAt: Date;
+    createdAt?: Date;
 
     @Column()
-    updatedAt: Date;
+    updatedAt?: Date;
 
     @BeforeInsert()
     createDate() {
