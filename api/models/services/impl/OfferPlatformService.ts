@@ -1,25 +1,25 @@
 import { OfferPlatformService } from "../OfferPlaformService";
-import { OfferPlatform } from "../../../models/Offers";
+import { Platform } from "../..";
 
 export class OfferPlatformServiceImpl extends OfferPlatformService {
     
-    findAll() : Array<OfferPlatform> {
+    findAll() : Array<Platform> {
         return (null);
     }
 
-    findOne(id: number): OfferPlatform {
+    findOne(id: number): Platform {
         return (null);
     }
 
-    deleteOne(id: number): OfferPlatform {
+    deleteOne(id: number): Platform {
         return (null);
     }
 
-    update(plaform: OfferPlatform): OfferPlatform {
+    update(plaform: Platform): Platform {
         return (null);
     }
 
-    insert(platform: OfferPlatform): OfferPlatform {
+    insert(platform: Platform): Platform {
         return (null);
     }
     

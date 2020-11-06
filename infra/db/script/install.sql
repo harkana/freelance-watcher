@@ -22,7 +22,7 @@ CREATE TABLE offer (
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price BIGINT NOT NULL,
+    price VARCHAR(255) NOT NULL,
     link VARCHAR(255) NOT NULL,
     targetId VARCHAR(255) NOT NULL,
     platformId BIGINT NOT NULL,
@@ -32,7 +32,16 @@ CREATE TABLE offer (
 
 CREATE TABLE cron_task (
     id BIGSERIAL PRIMARY KEY,
-    platformId BIGINT PRIMARY KEY,
-    userId BIGINT PRIMARY KEY,
-    keywords TEXT NOT NULL
+    platformId BIGINT NOT NULL,
+    userId BIGINT NOT NULL,
+    createdAt TIMESTAMP NOT NULL,
+    updatedAt TIMESTAMP NOT NULL
 );
+
+CREATE TABLE cron_task_keywords (
+    id BIGSERIAL PRIMARY KEY,
+    cronTaskId BIGINT NOT NULL,
+    keyword VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP NOT NULL,
+    updatedAt TIMESTAMP NOT NULL
+)

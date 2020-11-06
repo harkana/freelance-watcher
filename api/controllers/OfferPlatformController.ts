@@ -1,5 +1,5 @@
 import { Controller, Get, Route } from "tsoa";
-import { OfferPlatform } from "../models/Offers";
+import { Platform } from "../models";
 import { OfferPlatformServiceImpl } from "../models/services/impl/OfferPlatformService";
 import { OfferPlatformService } from "../models/services/OfferPlaformService";
 
@@ -14,7 +14,7 @@ export class OfferPlatformController extends Controller {
     }
 
     @Get("/")
-    async findAll() : Promise<Array<OfferPlatform>>{
+    async findAll() : Promise<Array<Platform>>{
         const platforms = await this.offerPlaformService.findAll();
 
         return (platforms);

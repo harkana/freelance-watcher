@@ -1,7 +1,9 @@
 import express from "express";
 import { RegisterRoutes } from "./build/routes"
-import fs from "fs";
+import { readFileSync } from "fs";
 import { absolutePath } from "swagger-ui-dist"
+import { createConnection } from "typeorm";
+import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 
 export default class ApiServer {
 
@@ -29,15 +31,15 @@ export default class ApiServer {
             ];
             const filtered = routes.filter((route) => route == req.path);
 
-            if (filtered.length == 1){
-                res.end(fs.readFileSync("./App/index.html"));
+            if (filtered.length == 1) {
+                res.end(readFileSync("./App/index.html"));
             }
             else {
                 next();
             }
         });
         this.app.get("/", (req: express.Request, res: express.Response) => {
-            res.end(fs.readFileSync('./App/index.html'));
+            res.end(readFileSync('./App/index.html'));
         });
         this.mount();
     }
@@ -62,7 +64,7 @@ export default class ApiServer {
         this.app.get('/swagger.json', (req, res) => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8'
-            }).end(fs.readFileSync(`./build/swagger.json`, {
+            }).end(readFileSync(`./build/swagger.json`, {
                 encoding: 'utf8'
             }));
         });
@@ -70,8 +72,26 @@ export default class ApiServer {
     }
 
     start() {
-        this.app.listen(this.port, this.host, () => {
-            console.log(`The server runs at http://${this.host}:${this.port}`);
+        const opts: PostgresConnectionOptions = {
+            type: "postgres",
+            url: process.env.DB_URL,
+            entities: [
+                `${__dirname}/models/**/*.ts`
+            ],
+            migrations: [
+                `${__dirname}/migrations/**/*.ts`
+            ]
+        };
+        createConnection(opts).then(async (conn) => {
+            await conn.runMigrations({
+                transaction: "all"
+            });
+
+            this.app.listen(this.port, this.host, () => {
+                console.log(`The server runs at http://${this.host}:${this.port}`);
+            });
+        }).catch(() => {
+            console.log("The server can't start.");
         });
     }
 

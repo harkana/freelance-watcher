@@ -1,9 +1,9 @@
-import { OfferPlatform } from "../Offers";
+import { Platform } from "..";
 
 export abstract class  OfferPlatformService {
-    abstract findAll() : Array<OfferPlatform>;
-    abstract findOne(id: number): OfferPlatform;
-    abstract deleteOne(id: number): OfferPlatform;
-    abstract update(plaform: OfferPlatform): OfferPlatform;
-    abstract insert(platform: OfferPlatform): OfferPlatform;
+    abstract findAll() : Array<Platform>;
+    abstract findOne(id: number): Platform;
+    abstract deleteOne(id: number): Platform;
+    abstract update(plaform: Platform): Platform;
+    abstract insert(platform: Platform): Platform;
 }

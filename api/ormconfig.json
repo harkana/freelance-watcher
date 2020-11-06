@@ -1,0 +1,25 @@
+{
+   "name": "default",
+   "type": "postgres",
+   "host": "devcode.fr",
+   "port": 6666,
+   "username": "simoes_t",
+   "password": "azerty123",
+   "database": "freelance_watcher",
+   "synchronize": false,
+   "logging": false,
+   "entities": [
+      "models/**/*.ts"
+   ],
+   "migrations": [
+      "migrations/**/*.ts"
+   ],
+   "subscribers": [
+      "subscribers/**/*.ts"
+   ],
+   "cli": {
+      "entitiesDir": "models",
+      "migrationsDir": "migrations",
+      "subscribersDir": "subscribers"
+   }
+}
