@@ -1,9 +1,9 @@
-import { Platform } from "..";
+import { PlatformSource } from "..";
 
 export abstract class PlatformService {
-    abstract findAll(): Promise<Array<Platform>>;
-    abstract insert(platform: Platform): Promise<Platform>;
-    abstract findOne(id: number): Promise<Platform>;
-    abstract update(platform: Platform): Promise<Platform>;
-    abstract delete(platform: Platform): Promise<boolean>;
+    abstract findAll(): Promise<Array<PlatformSource>>;
+    abstract insert(platform: PlatformSource): Promise<PlatformSource>;
+    abstract findOne(id: number): Promise<PlatformSource>;
+    abstract update(platform: PlatformSource): Promise<PlatformSource>;
+    abstract delete(platform: PlatformSource): Promise<boolean>;
 }
