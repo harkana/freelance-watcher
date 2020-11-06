@@ -34,12 +34,12 @@ export class PlatformSource extends RootEntity {
     @OneToMany(_ => Offer, offer => offer.platform, {
         lazy: true
     })
-    offers: Array<Offer>;
+    offers?: Array<Offer>;
 
     @OneToMany(_ => CronTask, cronTask => cronTask.platform, {
         lazy: true
     })
-    tasks: Array<CronTask>;
+    tasks?: Array<CronTask>;
 
 }
 
@@ -97,7 +97,7 @@ export class User extends RootEntity {
     @OneToMany(_ => CronTask, task => task.user, {
         lazy: true
     })
-    tasks: Array<CronTask>;
+    tasks?: Array<CronTask>;
 
 }
 
@@ -128,7 +128,7 @@ export class CronTask extends RootEntity {
     @OneToMany(_ => CronTaskKeywords, cronTaskKeywords => cronTaskKeywords.cronTask, {
         lazy: true
     })
-    cronTaskKeywods: Array<CronTaskKeywords>;
+    cronTaskKeywods?: Array<CronTaskKeywords>;
 
 }
 
