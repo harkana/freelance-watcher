@@ -1,6 +1,8 @@
 import { PlatformSource } from "../..";
 import { PlatformService } from "../PlatformService";
 import { EntityManager, getManager } from "typeorm";
+import { Platform } from "puppeteer";
+import { QueryPlatform } from "../../../resources";
 
 export class PlatformServiceImpl implements PlatformService {
 
@@ -8,6 +10,26 @@ export class PlatformServiceImpl implements PlatformService {
 
     constructor() {
         this.entityManager = getManager('app');
+    }
+
+    async findByName(name: string): Promise<PlatformSource> {
+        const platform = await this.entityManager.createQueryBuilder(PlatformSource, "plt").where("plt.name = :name", {
+            name
+        }).getOne();
+
+        return (platform);
+    }
+
+    async search(query: QueryPlatform): Promise<PlatformSource> {
+        const platform = await this.entityManager
+            .createQueryBuilder(PlatformSource, "plt")
+            .leftJoinAndSelect("plt.tasks", "tasks")
+            .leftJoinAndSelect("tasks.cronTaskKeywords", "keywords")
+            .where("plt.name = :name", {
+                "name": query.platformName
+            }).getOne();
+
+        return (platform);
     }
 
     async findAll(): Promise<PlatformSource[]> {

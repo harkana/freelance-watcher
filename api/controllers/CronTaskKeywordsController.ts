@@ -72,6 +72,7 @@ export class CronTaskKeywordsController extends Controller {
                 else {
                     toupdated.cronTask.platform = new PlatformSource();
                 }
+                toupdated.cronTask.platform.link = cronTaskKeywords.cronTask.platform.link;
                 toupdated.cronTask.platform.name = cronTaskKeywords.cronTask.platform.name;
             }
             if (cronTaskKeywords.cronTask.user) {
@@ -113,6 +114,7 @@ export class CronTaskKeywordsController extends Controller {
                 else {
                     tosaved.cronTask.platform = new PlatformSource();
                 }
+                tosaved.cronTask.platform.link = cronTaskKeywords.cronTask.platform.link;
                 tosaved.cronTask.platform.name = cronTaskKeywords.cronTask.platform.name;
             }
             if (cronTaskKeywords.cronTask.user) {

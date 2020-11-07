@@ -67,6 +67,7 @@ export class CronTaskController extends Controller {
             else {
                 toupdated.platform = new PlatformSource();
             }
+            toupdated.platform.link = cronTask.platform.link;
             toupdated.platform.name = cronTask.platform.name;
         }
         if (cronTask.user) {
@@ -102,6 +103,7 @@ export class CronTaskController extends Controller {
             else {
                 tosaved.platform = new PlatformSource();
             }
+            tosaved.platform.link = cronTask.platform.link;
             tosaved.platform.name = cronTask.platform.name;
         }
         if (cronTask.user) {

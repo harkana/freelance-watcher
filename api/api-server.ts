@@ -4,6 +4,8 @@ import { absolutePath } from "swagger-ui-dist"
 import { createConnection } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { container } from "./container";
+import { Freelance } from "./parsing/Freelance";
+import ParseFreelanceInformatique from "./parsing/freelance-informatique";
 
 export default class ApiServer {
 
@@ -74,7 +76,6 @@ export default class ApiServer {
     }
 
     start() {
-        console.log(process.env.DB_URL);
         const opts: PostgresConnectionOptions = {
             name: "app",
             type: "postgres",
@@ -87,13 +88,22 @@ export default class ApiServer {
             ],
             logging: true
         };
-        console.log("a");
         createConnection(opts).then(async (conn) => {
-            console.log("enter ?");
             await conn.runMigrations({
                 transaction: "all"
             });
+            const freelance = new Freelance();
 
+            await freelance.bootstrap();
+            const fri = new ParseFreelanceInformatique();
+
+            try {
+                await fri.run();
+            }
+            catch (e) {
+                console.log(e);
+                console.log(JSON.stringify(e));
+            }
             this.app.listen(this.port, this.host, () => {
                 console.log(`The server runs at http://${this.host}:${this.port}`);
             });

@@ -32,6 +32,9 @@ export class PlatformSource extends RootEntity {
     @Column()
     name: string;
 
+    @Column()
+    link: string
+
     @OneToMany(_ => Offer, offer => offer.platform, {
         lazy: true,
         cascade: ["insert", "update"]
@@ -61,7 +64,16 @@ export class Offer extends RootEntity {
     description: string;
 
     @Column()
-    price: string;
+    price?: string;
+
+    @Column()
+    place?: string;
+
+    @Column()
+    startTime?: Date;
+
+    @Column()
+    duration?: number;
 
     @Column()
     link: string;

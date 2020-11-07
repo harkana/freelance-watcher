@@ -6,6 +6,7 @@ export class RootResource {
 export class PlatformResource extends RootResource {
     id?: number;
     name: string;
+    link: string;
     offers?: Array<OfferResource>;
     tasks?: Array<CronTaskResource>;
 }
@@ -17,6 +18,9 @@ export class OfferResource extends RootResource {
     price: string;
     link: string;
     targetId: string;
+    place: string;
+    duration: number;
+    startTime: Date;
     platform: PlatformResource;
 }
 
@@ -39,4 +43,10 @@ export class KeywordsResource extends RootResource {
     id?: number;
     cronTask: CronTaskResource;
     keyword: string;
+}
+
+
+export interface QueryPlatform {
+    userId?: number;
+    platformName?: string;
 }

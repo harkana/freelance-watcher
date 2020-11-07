@@ -62,6 +62,7 @@ export class PlatformController extends Controller {
         const tosaved = new PlatformSource();
         tosaved.id = platform.id;
         tosaved.name = platform.name;
+        tosaved.link = platform.link;
         if (platform.tasks) {
             tosaved.tasks = [];
             for (let task of platform.tasks) {
@@ -124,6 +125,7 @@ export class PlatformController extends Controller {
     async create(@Body() platform: PlatformSource) {
         const tosaved = new PlatformSource();
         tosaved.name = platform.name;
+        tosaved.link = platform.link;
         if (platform.tasks) {
             const tasks = [];
             for (let task of platform.tasks) {

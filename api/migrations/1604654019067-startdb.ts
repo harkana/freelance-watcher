@@ -20,6 +20,11 @@ export class startdb1604654019067 implements MigrationInterface {
                     isNullable: false
                 },
                 {
+                    name: "link",
+                    type: "varchar",
+                    isNullable: false
+                },
+                {
                     name: "createdAt",
                     type: "timestamp",
                     isNullable: false,
@@ -99,7 +104,7 @@ export class startdb1604654019067 implements MigrationInterface {
                 {
                     name: "price",
                     type: "varchar",
-                    isNullable: false
+                    isNullable: true
                 },
                 {
                     name: "link",
@@ -107,9 +112,25 @@ export class startdb1604654019067 implements MigrationInterface {
                     isNullable: false
                 },
                 {
+                    name: "place",
+                    type: "varchar",
+                    isNullable: true
+                },
+                {
+                    name: "duration",
+                    type: "bigint",
+                    isNullable: true
+                },
+                {
+                    name: "startTime",
+                    type: "timestamp",
+                    isNullable: true
+                },
+                {
                     name: "targetId",
                     type: "varchar",
-                    isNullable: false
+                    isNullable: false,
+                    isUnique: true
                 },
                 {
                     name: "platformId",
@@ -130,6 +151,79 @@ export class startdb1604654019067 implements MigrationInterface {
                     onUpdate: "CURRENT_DATE"
                 }
             ]
+        }));
+        await queryRunner.createTable(new Table({
+            name: "skill",
+            columns: [
+                {
+                    name: "id",
+                    generationStrategy: "increment",
+                    isGenerated: true,
+                    type: "int",
+                    isNullable: false,
+                    isPrimary: true
+                },
+                {
+                    name: "skill",
+                    type: "varchar",
+                    isNullable: false
+                },
+                {
+                    name: "createdAt",
+                    type: "timestamp",
+                    isNullable: false,
+                    default: "CURRENT_DATE"
+                },
+                {
+                    name: "updatedAt",
+                    type: "timestamp",
+                    isNullable: false,
+                    default: "CURRENT_DATE",
+                    onUpdate: "CURRENT_DATE"
+                }
+            ]
+        }));
+        await queryRunner.createTable(new Table({
+            name: "skill_offer",
+            columns: [
+                {
+                    name: "skillId",
+                    type: "int",
+                    isNullable: false,
+                    isPrimary: true
+                },
+                {
+                    name: "offerId",
+                    type: "int",
+                    isNullable: false,
+                    isPrimary: true
+                },
+                {
+                    name: "createdAt",
+                    type: "timestamp",
+                    isNullable: false,
+                    default: "CURRENT_DATE"
+                },
+                {
+                    name: "updatedAt",
+                    type: "timestamp",
+                    isNullable: false,
+                    default: "CURRENT_DATE",
+                    onUpdate: "CURRENT_DATE"
+                }
+            ]
+        }));
+        await queryRunner.createForeignKey("skill_offer", new TableForeignKey({
+            name: "fk_skill_offer_skill",
+            columnNames: ["skillId"],
+            referencedTableName: "skill",
+            referencedColumnNames: ["id"]
+        }));
+        await queryRunner.createForeignKey("skill_offer", new TableForeignKey({
+            name: "fk_skill_offer_offer",
+            columnNames: ["offerId"],
+            referencedTableName: "offer",
+            referencedColumnNames: ["id"]
         }));
         await queryRunner.createForeignKey("offer", new TableForeignKey({
             name: "fk_offer_platform",
@@ -234,11 +328,15 @@ export class startdb1604654019067 implements MigrationInterface {
         await queryRunner.dropForeignKey("cron_task", "fk_cron_task_user");
         await queryRunner.dropForeignKey("cron_task", "fk_cron_task_platform");
         await queryRunner.dropForeignKey("offer", "fk_offer_platform");
+        await queryRunner.dropForeignKey("skill_offer", "fk_skill_offer_offer");
+        await queryRunner.dropForeignKey("skill_offer", "fk_skill_offer_skill");
         await queryRunner.dropTable("cron_task_keywords");
         await queryRunner.dropTable("cron_task");
+        await queryRunner.dropTable("skill_offer");
+        await queryRunner.dropTable("skill");
         await queryRunner.dropTable("offer");
         await queryRunner.dropTable("user");
-        await queryRunner.dropTable("platform")
+        await queryRunner.dropTable("platform");
     }
 
 }

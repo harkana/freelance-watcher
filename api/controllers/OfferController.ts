@@ -65,6 +65,7 @@ export class OfferController extends Controller {
                 toupdated.platform = new PlatformSource();
             }
             toupdated.platform.name = offer.platform.name;
+            toupdated.platform.link = offer.platform.link;
         }
         const updated = await this.offerService.update(toupdated);
         const asm = new OfferAsm();
@@ -91,6 +92,7 @@ export class OfferController extends Controller {
                 tosaved.platform = new PlatformSource();
             }
             tosaved.platform.name = offer.platform.name;
+            tosaved.platform.link = offer.platform.link;
         }
         const saved = await this.offerService.insert(tosaved);
         const asm = new OfferAsm();

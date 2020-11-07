@@ -39,6 +39,7 @@ export class PlatformAsm {
 
         platformResource.id = platformEntity.id;
         platformResource.name = platformEntity.name;
+        platformResource.link = platformEntity.link;
         platformResource.createdAt = platformEntity.createdAt;
         platformResource.updatedAt = platformEntity.updatedAt;
         return (platformResource)
@@ -152,6 +153,10 @@ export class OfferAsm {
         resource.link = offer.link;
         resource.price = offer.price;
         resource.title = offer.title;
+        resource.targetId = offer.targetId;
+        resource.place = offer.place;
+        resource.startTime = offer.startTime;
+        resource.duration = offer.duration;
         resource.createdAt = offer.createdAt;
         resource.updatedAt = offer.updatedAt;
         return (resource);
