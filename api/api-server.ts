@@ -6,6 +6,7 @@ import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConne
 import { container } from "./container";
 import { Freelance } from "./parsing/Freelance";
 import ParseFreelanceInformatique from "./parsing/freelance-informatique";
+import ParseKicklox from "./parsing/kicklox";
 
 export default class ApiServer {
 
@@ -86,7 +87,7 @@ export default class ApiServer {
             migrations: [
                 `${__dirname}/migrations/**/*.ts`
             ],
-          //  logging: true
+            //  logging: true
         };
         createConnection(opts).then(async (conn) => {
             await conn.runMigrations({
@@ -95,10 +96,12 @@ export default class ApiServer {
             const freelance = new Freelance();
 
             await freelance.bootstrap();
-            const fri = new ParseFreelanceInformatique();
+            //const fri = new ParseFreelanceInformatique();
+            const kicklox = new ParseKicklox();
 
             try {
-                await fri.run();
+                await kicklox.run();
+                //await fri.run();
             }
             catch (e) {
                 console.log(e);

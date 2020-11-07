@@ -1,13 +1,19 @@
 import ParseFreelanceInformatique from "./freelance-informatique";
+import ParseTwago from "./twago";
+import ParseKicklox from "./kicklox";
 
 export class Freelance {
-    async bootstrap(){
+    async bootstrap() {
         try {
-            const o = new ParseFreelanceInformatique();
+            const fi = new ParseFreelanceInformatique();
+            const twago = new ParseTwago();
+            const kicklox = new ParseKicklox();
 
-            await o.bootstrap();
+            await fi.bootstrap();
+            await twago.boostrap();
+            await kicklox.bootstrap();
         }
-        catch (e){
+        catch (e) {
             console.log(e);
         }
     }
