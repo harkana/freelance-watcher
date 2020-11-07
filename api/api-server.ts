@@ -86,7 +86,7 @@ export default class ApiServer {
             migrations: [
                 `${__dirname}/migrations/**/*.ts`
             ],
-            logging: true
+          //  logging: true
         };
         createConnection(opts).then(async (conn) => {
             await conn.runMigrations({
