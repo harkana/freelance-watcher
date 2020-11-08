@@ -4,21 +4,20 @@ import { PlatformService } from "../../models/services/PlatformService";
 import fs from "fs";
 import { Offer, PlatformSource } from "../../models";
 import { QueryPlatform } from "../../resources";
-import axios from "axios";
 import cheerio from "cheerio";
 import puppeteer from "puppeteer";
+import { AbstractParse } from "../AbstractParse";
 
 
-export class ParseFiverr {
+export class ParseFiverr implements AbstractParse {
 
-    private name: string;
+    static NAME: string = "Fiverr";
     private offerService: OfferService;
     private platformService: PlatformService;
     private context: { base: string, values: Array<{ key: string, link: string }> };
     private uniqList: Array<String>;
 
     constructor() {
-        this.name = "Fiverr";
         this.offerService = container.resolve('offerService');
         this.platformService = container.resolve('platformService');
         this.context = JSON.parse(fs.readFileSync(`${__dirname}/assets/merge.json`, {
@@ -28,12 +27,12 @@ export class ParseFiverr {
     }
 
     async bootstrap() {
-        const plt = await this.platformService.findByName(this.name);
+        const plt = await this.platformService.findByName(ParseFiverr.NAME);
 
         if (!plt) {
             const kicklox = new PlatformSource();
 
-            kicklox.name = this.name;
+            kicklox.name = ParseFiverr.NAME;
             kicklox.link = "https://www.fiverr.com/";
             await this.platformService.insert(kicklox);
         }
@@ -68,7 +67,6 @@ export class ParseFiverr {
         if (matches.length) {
             offer.price = `${matches[0]}€`;
         }
-        console.log(offer);
         await this.offerService.insert(offer);
         await browser.close();
     }
@@ -115,7 +113,7 @@ export class ParseFiverr {
 
     async run() {
         const query: QueryPlatform = {
-            platformName: this.name
+            platformName: ParseFiverr.NAME
         };
         const plt: PlatformSource = await this.platformService.search(query);
         const fetched = await this.platformService.findOne(plt.id);

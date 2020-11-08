@@ -34,8 +34,6 @@ export class PlatformController extends Controller {
         for (let src of list) {
             const resource = asm.toResource(src);
 
-            await asm.withOffers(resource, src);
-            await asm.withTasks(resource, src);
             ret.push(resource);
         }
         return (ret);

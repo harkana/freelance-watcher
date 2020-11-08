@@ -5,26 +5,26 @@ import { Offer, PlatformSource } from "../../models";
 import { QueryPlatform } from "../../resources";
 import axios from "axios";
 import cheerio from "cheerio";
+import { AbstractParse } from "../AbstractParse";
 
-export default class ParseKicklox {
+export default class ParseKicklox implements AbstractParse {
 
-    private name: string;
+    static NAME: string = "kicklox";
     private offerService: OfferService;
     private platformService: PlatformService;
 
     constructor() {
-        this.name = "kicklox";
         this.offerService = container.resolve('offerService');
         this.platformService = container.resolve('platformService');
     }
 
     async bootstrap() {
-        const plt = await this.platformService.findByName(this.name);
+        const plt = await this.platformService.findByName(ParseKicklox.NAME);
 
         if (!plt) {
             const kicklox = new PlatformSource();
 
-            kicklox.name = this.name;
+            kicklox.name = ParseKicklox.NAME;
             kicklox.link = "https://www.kicklox.com";
             await this.platformService.insert(kicklox);
         }
@@ -66,7 +66,7 @@ export default class ParseKicklox {
     async run() {
         const uri = "/opportunites-missions-cdi";
         const query: QueryPlatform = {
-            platformName: this.name
+            platformName: ParseKicklox.NAME
         };
         const plt: PlatformSource = await this.platformService.search(query);
         let keywords: Array<string> = [];

@@ -6,17 +6,17 @@ import { QueryPlatform } from "../../resources";
 import fs from "fs";
 import axios from "axios";
 import cheerio from "cheerio";
+import { AbstractParse } from "../AbstractParse";
 
-export class Parse404Works {
+export class Parse404Works implements AbstractParse {
 
-    private name: string;
+    static NAME: string = "404works";
     private offerService: OfferService;
     private platformService: PlatformService;
     private context: Array<{ key: string, value: string }>;
     private uniqList: Array<String>;
 
     constructor() {
-        this.name = "404works";
         this.offerService = container.resolve('offerService');
         this.platformService = container.resolve('platformService');
         this.context = JSON.parse(fs.readFileSync(`${__dirname}/assets/info.json`, {
@@ -25,12 +25,12 @@ export class Parse404Works {
     }
 
     async bootstrap() {
-        const plt = await this.platformService.findByName(this.name);
+        const plt = await this.platformService.findByName(Parse404Works.NAME);
 
         if (!plt) {
             const work = new PlatformSource();
 
-            work.name = this.name;
+            work.name = Parse404Works.NAME;
             work.link = "https://www.404works.com/";
             await this.platformService.insert(work);
         }
@@ -87,7 +87,7 @@ export class Parse404Works {
 
     async run() {
         const query: QueryPlatform = {
-            platformName: this.name
+            platformName: Parse404Works.NAME
         };
         const plt: PlatformSource = await this.platformService.search(query);
         const fetched = await this.platformService.findOne(plt.id);

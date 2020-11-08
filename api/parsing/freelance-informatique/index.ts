@@ -12,26 +12,26 @@ import moment from "moment";
 import { decode, encode } from "iconv-lite";
 import querystring from "querystring";
 import request from "request";
+import { AbstractParse } from "../AbstractParse";
 
-export default class ParseFreelanceInformatique {
+export default class ParseFreelanceInformatique implements AbstractParse {
 
-    private name: string;
+    static NAME: string = "freelance-informatique";
     private platformService: PlatformService;
     private offerService: OfferService;
 
     private currentPage: number;
 
     constructor() {
-        this.name = "freelance-informatique";
         this.platformService = container.resolve('platformService');
         this.offerService = container.resolve('offerService');
     }
 
     async bootstrap() {
-        const plaform: PlatformSource = await this.platformService.findByName(this.name);
+        const plaform: PlatformSource = await this.platformService.findByName(ParseFreelanceInformatique.NAME);
         if (!plaform) {
             const nPlt = new PlatformSource();
-            nPlt.name = this.name;
+            nPlt.name = ParseFreelanceInformatique.NAME;
             nPlt.link = "https://www.freelance-informatique.fr";
 
             await this.platformService.insert(nPlt);
@@ -119,7 +119,6 @@ export default class ParseFreelanceInformatique {
         if (arr.length > 0) {
             const aEl = $("ul.page-numbers a.next")
             if (!aEl.hasClass('disabled')) {
-                console.log("enter ?");
                 this.currentPage++;
                 await this.request(plt, keyword);
             }
@@ -128,7 +127,7 @@ export default class ParseFreelanceInformatique {
 
     async run() {
         const query: QueryPlatform = {
-            platformName: this.name
+            platformName: ParseFreelanceInformatique.NAME
         };
         const plt: PlatformSource = await this.platformService.search(query);
         let keywords: Array<string> = [];
