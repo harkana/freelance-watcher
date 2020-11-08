@@ -3,7 +3,9 @@ import express from "express";
 import dotenv from "dotenv";
 import schedule from "node-schedule";
 
-dotenv.config();
+dotenv.config({
+    path: "../.env"
+});
 
 const app = express();
 
