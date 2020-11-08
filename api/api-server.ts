@@ -5,6 +5,7 @@ import { createConnection } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { container } from "./container";
 import { Parse404Works } from "./parsing/404works";
+import { ParseFiverr } from "./parsing/fiverr";
 import { Freelance } from "./parsing/Freelance";
 import ParseFreelanceInformatique from "./parsing/freelance-informatique";
 import ParseKicklox from "./parsing/kicklox";
@@ -97,10 +98,10 @@ export default class ApiServer {
             const freelance = new Freelance();
 
             await freelance.bootstrap();
-            const work = new Parse404Works();
+            const fiverr = new ParseFiverr();
 
             try {
-                await work.run();
+                await fiverr.run();
             }
             catch (e) {
                 console.log(e);

@@ -81,6 +81,20 @@ export class CronTaskController extends Controller {
             toupdated.user.password = cronTask.user.password;
             toupdated.user.pseudo = cronTask.user.pseudo;
         }
+        if (cronTask.cronTaskKeywords && cronTask.cronTaskKeywords.length) {
+            const keywords = await cronTask.cronTaskKeywords;
+            const crks = [];
+
+            for (let keyword of keywords) {
+                const crk = new CronTaskKeywords();
+
+                crk.id = keyword.id;
+                crk.keyword = keyword.keyword;
+                crk.cronTask = toupdated;
+                crks.push(crk);
+            }
+            toupdated.cronTaskKeywords = crks;
+        }
         const updated = await this.cronTaskService.update(toupdated);
         const asm = new CronTaskAsm();
         const resource = asm.toResource(updated);
@@ -116,6 +130,20 @@ export class CronTaskController extends Controller {
             tosaved.user.email = cronTask.user.email;
             tosaved.user.password = cronTask.user.password;
             tosaved.user.pseudo = cronTask.user.pseudo;
+        }
+        if (cronTask.cronTaskKeywords && cronTask.cronTaskKeywords.length) {
+            const keywords = await cronTask.cronTaskKeywords;
+            const crks = [];
+
+            for (let keyword of keywords) {
+                const crk = new CronTaskKeywords();
+
+                crk.id = keyword.id;
+                crk.keyword = keyword.keyword;
+                crk.cronTask = tosaved;
+                crks.push(crk);
+            }
+            tosaved.cronTaskKeywords = crks;
         }
         const saved = await this.cronTaskService.insert(tosaved);
         const asm = new CronTaskAsm();

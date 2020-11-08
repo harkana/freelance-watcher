@@ -109,7 +109,7 @@ export class Parse404Works {
             for (let i = 0; i < context.length; i++) {
                 const c = context[i];
 
-                if (c.value.indexOf(keyword) > -1) {
+                if (c.value.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
                     urls.push(`https://www.404works.com/fr/projects/job/${c.key}`);
                     context.splice(i, 1);
                     i--;

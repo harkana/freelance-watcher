@@ -49,8 +49,8 @@ export default class ParseKicklox {
             offer.targetId = offer.link;
             let flag = false;
             for (let keyword of keywords) {
-                if (offer.title.indexOf(keyword) > -1 ||
-                    offer.description.indexOf(keyword) > -1) {
+                if (offer.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
+                    offer.description.toLowerCase().indexOf(keyword.toLowerCase()) > -1) {
                     flag = true;
                 }
             }
