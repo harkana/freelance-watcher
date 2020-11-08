@@ -111,7 +111,6 @@ export class PlatformController extends Controller {
                 tosaved.offers.push(newOffer);
             }
         }
-        console.log(tosaved);
         const updated = await this.platformService.update(tosaved);
         const asm = new PlatformAsm();
         const resource = asm.toResource(updated);
@@ -153,7 +152,6 @@ export class PlatformController extends Controller {
                 tasks.push(newTask);
             }
             tosaved.tasks = tasks;
-            console.log(tosaved.tasks);
         }
         if (platform.offers) {
             const offers = [];
@@ -177,15 +175,12 @@ export class PlatformController extends Controller {
             }
             tosaved.offers = offers;
         }
-        console.log(tosaved);
         const saved = await this.platformService.insert(tosaved);
-        console.log(tosaved);
         const asm = new PlatformAsm();
         const resource = asm.toResource(saved);
 
         await asm.withOffers(resource, saved);
         await asm.withTasks(resource, saved);
-        console.log(resource);
         return (resource);
     }
 

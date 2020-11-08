@@ -1,0 +1,331 @@
+[{
+    "key": "actor",
+    "value": "Acteur"
+}, {
+    "key": "database-administrator",
+    "value": "Administrateur base de données"
+}, {
+    "key": "system-administrator",
+    "value": "Administrateur système"
+}, {
+    "key": "functional-analyst",
+    "value": "Analyste fonctionnel"
+}, {
+    "key": "animator",
+    "value": "Animateur"
+}, {
+    "key": "business-provider",
+    "value": "Apporteur d'affaires"
+}, {
+    "key": "architect",
+    "value": "Architecte"
+}, {
+    "key": "interior-designer",
+    "value": "Architecte d'intérieur"
+}, {
+    "key": "information-architect",
+    "value": "Architecte de l'information"
+}, {
+    "key": "web-architect",
+    "value": "Architecte web"
+}, {
+    "key": "assistant",
+    "value": "Assistant"
+}, {
+    "key": "press-officer",
+    "value": "Attaché de presse"
+}, {
+    "key": "business-developer",
+    "value": "Business developer"
+}, {
+    "key": "cameraman",
+    "value": "Cadreur"
+}, {
+    "key": "research-officer",
+    "value": "Chargé d'études"
+}, {
+    "key": "account-manager",
+    "value": "Chargé de clientèle"
+}, {
+    "key": "communication-manager",
+    "value": "Chargé de communication"
+}, {
+    "key": "production-manager",
+    "value": "Chargé de production"
+}, {
+    "key": "manufacturing-manager",
+    "value": "Chef de fabrication"
+}, {
+    "key": "ecrm-project-manager",
+    "value": "Chef de projet e-CRM"
+}, {
+    "key": "marketing-project-manager",
+    "value": "Chef de projet marketing"
+}, {
+    "key": "technical-project-chef",
+    "value": "Chef de projet technique"
+}, {
+    "key": "web-project-manager",
+    "value": "Chef de projet web"
+}, {
+    "key": "editorial-project-manager",
+    "value": "Chef de projet éditorial"
+}, {
+    "key": "event-project-manager",
+    "value": "Chef de projet événementiel"
+}, {
+    "key": "coach",
+    "value": "Coach"
+}, {
+    "key": "sales-representative",
+    "value": "Commercial"
+}, {
+    "key": "community-manager",
+    "value": "Community manager"
+}, {
+    "key": "accountant",
+    "value": "Comptable"
+}, {
+    "key": "designer-editor",
+    "value": "Concepteur-rédacteur"
+}, {
+    "key": "crm-consultant",
+    "value": "Consultant CRM"
+}, {
+    "key": "it-consultant",
+    "value": "Consultant IT"
+}, {
+    "key": "saas-consultant",
+    "value": "Consultant SAAS"
+}, {
+    "key": "smo-consultant",
+    "value": "Consultant SMO"
+}, {
+    "key": "communication-consultant",
+    "value": "Consultant en communication"
+}, {
+    "key": "seo-consultant",
+    "value": "Consultant en référencement"
+}, {
+    "key": "web-marketing-consultant",
+    "value": "Consultant en webmarketing"
+}, {
+    "key": "software-consultant",
+    "value": "Consultant progiciel"
+}, {
+    "key": "web-analytics-consultant",
+    "value": "Consultant web analytics"
+}, {
+    "key": "editorial-consultant",
+    "value": "Consultant éditorial"
+}, {
+    "key": "content-manager",
+    "value": "Content manager"
+}, {
+    "key": "designer",
+    "value": "Designer"
+}, {
+    "key": "ux-ui-designer",
+    "value": "Designer UX / UI"
+}, {
+    "key": "product-designer",
+    "value": "Designer produit"
+}, {
+    "key": "devops",
+    "value": "Devops"
+}, {
+    "key": "artistic-director",
+    "value": "Directeur artistique"
+}, {
+    "key": "product-manager",
+    "value": "Directeur de produit"
+}, {
+    "key": "librarian",
+    "value": "Documentaliste"
+}, {
+    "key": "decorator",
+    "value": "Décorateur"
+}, {
+    "key": "data-protection-officer",
+    "value": "Délégué à la protection des données"
+}, {
+    "key": "back-end-developer",
+    "value": "Développeur back-end"
+}, {
+    "key": "database-developer",
+    "value": "Développeur base de données"
+}, {
+    "key": "front-end-developer",
+    "value": "Développeur front-end"
+}, {
+    "key": "mobile-developer",
+    "value": "Développeur mobile"
+}, {
+    "key": "web-developer",
+    "value": "Développeur web"
+}, {
+    "key": "e-marketer",
+    "value": "E-Marketer"
+}, {
+    "key": "entrepreneur",
+    "value": "Entrepreneur"
+}, {
+    "key": "ergonomist",
+    "value": "Ergonome"
+}, {
+    "key": "security-expert",
+    "value": "Expert en sécurité"
+}, {
+    "key": "flasher",
+    "value": "Flasheur"
+}, {
+    "key": "teacher",
+    "value": "Formateur"
+}, {
+    "key": "game-designer",
+    "value": "Game designer"
+}, {
+    "key": "database-manager",
+    "value": "Gestionnaire de base de données"
+}, {
+    "key": "grader",
+    "value": "Gradeur"
+}, {
+    "key": "graphic-designer",
+    "value": "Graphiste"
+}, {
+    "key": "growth-hacker",
+    "value": "Growth hacker"
+}, {
+    "key": "hotliner",
+    "value": "Hotliner"
+}, {
+    "key": "illustrator",
+    "value": "Illustrateur"
+}, {
+    "key": "3d-illustrator",
+    "value": "Illustrateur 3D"
+}, {
+    "key": "computer-graphics-designer",
+    "value": "Infographiste"
+}, {
+    "key": "engineer",
+    "value": "Ingénieur"
+}, {
+    "key": "sound-engineer",
+    "value": "Ingénieur du son"
+}, {
+    "key": "integrator",
+    "value": "Intégrateur"
+}, {
+    "key": "journalist",
+    "value": "Journaliste"
+}, {
+    "key": "lawyer",
+    "value": "Juriste"
+}, {
+    "key": "logistician",
+    "value": "Logisticien"
+}, {
+    "key": "makeup-artist",
+    "value": "Maquilleur"
+}, {
+    "key": "media-planner",
+    "value": "Media planner"
+}, {
+    "key": "model-maker",
+    "value": "Modéliste"
+}, {
+    "key": "moderator",
+    "value": "Modérateur"
+}, {
+    "key": "video-editor",
+    "value": "Monteur vidéo"
+}, {
+    "key": "motion-designer",
+    "value": "Motion designer"
+}, {
+    "key": "musician",
+    "value": "Musicien"
+}, {
+    "key": "event-organizer",
+    "value": "Organisateur d'événement"
+}, {
+    "key": "landscaper",
+    "value": "Paysagiste"
+}, {
+    "key": "photographer",
+    "value": "Photographe"
+}, {
+    "key": "account-planner",
+    "value": "Planneur stratégique"
+}, {
+    "key": "product-owner",
+    "value": "Product owner"
+}, {
+    "key": "programmer",
+    "value": "Programmeur"
+}, {
+    "key": "e-mailing-manager",
+    "value": "Responsable e-mailing"
+}, {
+    "key": "technical-manager",
+    "value": "Responsable technique"
+}, {
+    "key": "editorial-manager",
+    "value": "Responsable éditorial"
+}, {
+    "key": "director",
+    "value": "Réalisateur"
+}, {
+    "key": "writer",
+    "value": "Rédacteur"
+}, {
+    "key": "seo-expert",
+    "value": "Référenceur"
+}, {
+    "key": "scriptwriter",
+    "value": "Scénariste"
+}, {
+    "key": "copyeditor",
+    "value": "Secrétaire de rédaction"
+}, {
+    "key": "social-media-manager",
+    "value": "Social media manager"
+}, {
+    "key": "sound-designer",
+    "value": "Sound designer"
+}, {
+    "key": "stylist",
+    "value": "Styliste"
+}, {
+    "key": "network-technician",
+    "value": "Technicien réseau"
+}, {
+    "key": "translator",
+    "value": "Traducteur"
+}, {
+    "key": "traffic-manager",
+    "value": "Traffic manager"
+}, {
+    "key": "transcriber",
+    "value": "Transcripteur"
+}, {
+    "key": "town-planner",
+    "value": "Urbaniste"
+}, {
+    "key": "seller",
+    "value": "Vendeur"
+}, {
+    "key": "web-designer",
+    "value": "Web designer"
+}, {
+    "key": "webmaster",
+    "value": "Webmaster"
+}, {
+    "key": "educator",
+    "value": "Éducateur"
+}, {
+    "key": "student",
+    "value": "Étudiant"
+}]

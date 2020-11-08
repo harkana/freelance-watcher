@@ -4,6 +4,7 @@ import { absolutePath } from "swagger-ui-dist"
 import { createConnection } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { container } from "./container";
+import { Parse404Works } from "./parsing/404works";
 import { Freelance } from "./parsing/Freelance";
 import ParseFreelanceInformatique from "./parsing/freelance-informatique";
 import ParseKicklox from "./parsing/kicklox";
@@ -96,12 +97,10 @@ export default class ApiServer {
             const freelance = new Freelance();
 
             await freelance.bootstrap();
-            //const fri = new ParseFreelanceInformatique();
-            const kicklox = new ParseKicklox();
+            const work = new Parse404Works();
 
             try {
-                await kicklox.run();
-                //await fri.run();
+                await work.run();
             }
             catch (e) {
                 console.log(e);
