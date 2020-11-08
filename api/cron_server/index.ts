@@ -3,9 +3,7 @@ import express from "express";
 import { config } from "dotenv";
 import schedule from "node-schedule";
 
-config({
-    path: ".."
-});
+config();
 
 const app = express();
 
