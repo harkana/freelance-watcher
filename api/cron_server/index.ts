@@ -1,10 +1,10 @@
 import { Freelance } from "../parsing/Freelance";
 import express from "express";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import schedule from "node-schedule";
 
-dotenv.config({
-    path: "../.env"
+config({
+    path: ".."
 });
 
 const app = express();
@@ -52,6 +52,6 @@ app.get('/stop_scheduler/:uid', (req: express.Request, res: express.Response) =>
     }
 });
 
-app.listen(process.env.LISTEN_CRON_SERVER_PORT, () => {
-    console.log(`The server is started at ${process.env.LISTEN_CRON_SERVER_PORT}`);
+app.listen(Number(process.env.LISTEN_CRON_SERVER_PORT), () => {
+    console.log(`The server is started at ${Number(process.env.LISTEN_CRON_SERVER_PORT)}`);
 });
