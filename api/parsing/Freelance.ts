@@ -17,10 +17,16 @@ const arr = [
 export class Freelance {
     platformService: PlatformService;
     parsers: Array<AbstractParse>;
+    selectedPlatform: string;
 
     constructor() {
         this.platformService = container.resolve('platformService');
         this.parsers = [];
+        this.selectedPlatform = null;
+    }
+
+    setSelectedPlatform(str: string) {
+        this.selectedPlatform = str;
     }
 
     async bootstrap() {
@@ -29,13 +35,17 @@ export class Freelance {
 
 
             for (let platform of platforms) {
-                for (let o of arr){
-                    if (o.NAME === platform.name){
-                        this.parsers.push(new o());
+                for (let o of arr) {
+                    if (o.NAME === platform.name) {
+                        if (!this.selectedPlatform ||
+                            (this.selectedPlatform === platform.name &&
+                                this.selectedPlatform === o.NAME)) {
+                            this.parsers.push(new o());
+                        }
                     }
                 }
             }
-            for (let parser of this.parsers){
+            for (let parser of this.parsers) {
                 await parser.bootstrap();
                 await parser.run();
             }
