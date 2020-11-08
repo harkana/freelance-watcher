@@ -4,11 +4,6 @@ import { absolutePath } from "swagger-ui-dist"
 import { createConnection } from "typeorm";
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import { container } from "./container";
-import { Parse404Works } from "./parsing/404works";
-import { ParseFiverr } from "./parsing/fiverr";
-import { Freelance } from "./parsing/Freelance";
-import ParseFreelanceInformatique from "./parsing/freelance-informatique";
-import ParseKicklox from "./parsing/kicklox";
 
 export default class ApiServer {
 
@@ -88,25 +83,13 @@ export default class ApiServer {
             ],
             migrations: [
                 `${__dirname}/migrations/**/*.ts`
-            ],
-            //  logging: true
+            ]
         };
+
         createConnection(opts).then(async (conn) => {
             await conn.runMigrations({
                 transaction: "all"
             });
-            const freelance = new Freelance();
-
-            await freelance.bootstrap();
-            const fiverr = new ParseFiverr();
-
-            try {
-                await fiverr.run();
-            }
-            catch (e) {
-                console.log(e);
-                console.log(JSON.stringify(e));
-            }
             this.app.listen(this.port, this.host, () => {
                 console.log(`The server runs at http://${this.host}:${this.port}`);
             });

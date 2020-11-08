@@ -51,7 +51,6 @@ export class PlatformAsm {
 
         if (resolved && resolved.length) {
             for (let task of resolved) {
-                console.log(task);
                 const cronTaskAsm = new CronTaskAsm();
                 const taskResource = cronTaskAsm.toResource(task);
 
