@@ -49,12 +49,18 @@ export class Freelance {
                 }
             }
             for (let parser of this.parsers) {
-                await parser.bootstrap();
-                await parser.run();
+                try {
+                    await parser.bootstrap();
+                    await parser.run();
+                }
+                catch (e){
+                    console.log(e.message);
+                }
             }
         }
         catch (e) {
-            console.log(e);
+            console.log(e.message);
         }
     }
 }
+
