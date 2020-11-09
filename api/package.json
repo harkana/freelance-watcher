@@ -39,7 +39,8 @@
    },
    "scripts": {
       "start": "ts-node index.ts",
-      "build": "tsoa spec-and-routes && tsc && cp build/swagger.json dist/build"
+      "tsoa": "tsoa",
+      "tsc": "tsc"
    },
    "devDependencies": {
       "@types/node": "^8.0.29",
