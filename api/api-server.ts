@@ -85,10 +85,12 @@ export default class ApiServer {
             type: "postgres",
             url: process.env.DB_URL,
             entities: [
-                `${__dirname}/models/**/*.ts`
+                `${__dirname}/models/**/*.ts`,
+                `${__dirname}/models/**/*.js`
             ],
             migrations: [
-                `${__dirname}/migrations/**/*.ts`
+                `${__dirname}/migrations/**/*.ts`,
+                `${__dirname}/migrations/**/*.js`
             ]
         };
 
