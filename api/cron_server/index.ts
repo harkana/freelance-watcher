@@ -11,6 +11,10 @@ const app = express();
 
 const schedulerUID: Array<string> = [];
 
+app.get('/', (req: express.Request, res: express.Response) => {
+    res.end("Welcome");
+});
+
 app.get('/start_scheduler', (req: express.Request, res: express.Response) => {
     let name: string = req.query.platformName as string;
     const uid = new Date().getTime().toString(34);
