@@ -11,6 +11,7 @@
           <v-row>
             <v-col cols="9">
               <v-autocomplete
+                prepend-icon="mdi-city"
                 v-model="platform"
                 :items="platforms"
                 :disabled="isUpdating"
@@ -81,11 +82,11 @@
                   </div>
                   <div>
                     <b-badge
-                      v-for="keyword in rule.keywords"
-                      :key="keyword"
+                      v-for="keyword in rule.cronTaskKeywords"
+                      :key="keyword.id"
                       href="#"
                       variant="primary"
-                      >{{ keyword }}</b-badge
+                      >{{ keyword.keyword }}</b-badge
                     >
                   </div>
                 </b-card-text>
@@ -137,7 +138,7 @@
 
 .settings {
   height: 100vh;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   overflow: auto;
 }
 
@@ -158,38 +159,28 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import { RuleModel } from "../models/Rule";
 import { PlatformModel } from "../models/Platform";
+import { PlatformResource } from "../models/index";
+import { CronTaskResource, KeywordsResource } from "../models/index";
+import { PlatformService } from "../models/services/PlatformService";
+import { CronTaskService } from "../models/services/CronTaskService";
 
 @Component
 export default class Settings extends Vue {
   name = "Settings";
-  rules: Array<RuleModel> = [
-    {
-      id: 1,
-      platform: {
-        id: 1,
-        name: "Fiveer",
-        isSelected: false,
-      },
-      keywords: ["Développeur"],
-    },
-  ];
+  rules: Array<CronTaskResource> = [];
 
-  platforms: Array<PlatformModel> = [
-    {
-      id: 1,
-      name: "Fiveer",
-      isSelected: true,
-    },
-    {
-      id: 2,
-      name: "Freelance-informatique",
-      isSelected: true,
-    },
-  ];
-
-  platform: number = this.platforms[1].id;
+  platforms: Array<PlatformResource> = [];
+  platformService: PlatformService;
+  cronTaskService: CronTaskService;
+  platform?: number = 0;
   isUpdating = false;
   queries: Array<string> = [""];
+
+  constructor() {
+    super();
+    this.platformService = new PlatformService();
+    this.cronTaskService = new CronTaskService();
+  }
 
   @Watch("queries")
   onQueryChange() {
@@ -201,31 +192,37 @@ export default class Settings extends Vue {
     console.log(this.platform);
   }
 
-  onEnter(queries: Array<string>, index: number) {
-    const rule: RuleModel = this.rules[index];
+  async onEnter(queries: Array<string>, index: number) {
+    const rule: CronTaskResource = this.rules[index];
 
     if (!rule) {
       return;
     }
-    if (rule.keywords.indexOf(queries[index]) === -1) {
-      rule.keywords.push(queries[index].slice());
+    if (
+      rule.cronTaskKeywords.findIndex((crk) => {
+        return queries[index].indexOf(crk.keyword) > -1;
+      }) === -1
+    ) {
+      rule.cronTaskKeywords.push({
+        keyword: queries[index].slice(),
+        cronTask: rule,
+      });
       queries[index] = "";
     }
+    await this.cronTaskService.update(rule);
   }
 
-  deleteRule(rule: RuleModel) {
-    this.rules = this.rules.filter((r) => rule.id !== r.id);
-  }
+  async deleteRule(rule: CronTaskResource) {
+    const deleted = await this.cronTaskService.delete(rule.id);
 
-  newRule() {
-    let newId = 1;
-
-    if (this.rules.length > 0) {
-      const last = this.rules[this.rules.length - 1];
-
-      newId = last.id;
+    if (deleted) {
+      this.rules = this.rules.filter((r) => {
+        return r.id !== rule.id;
+      });
     }
-    newId += 1;
+  }
+
+  async newRule() {
     let plt = null;
     for (let plateform of this.platforms) {
       if (plateform.id === this.platform) {
@@ -235,15 +232,25 @@ export default class Settings extends Vue {
     if (!plt) {
       return;
     }
-    this.rules.push({
-      id: newId,
+    const ct: CronTaskResource = {
       platform: plt,
-      keywords: [],
-    });
+      cronTaskKeywords: [],
+    };
+
+    this.rules.push(ct);
+    const ctE: CronTaskResource = ct;
+    const newCt = await this.cronTaskService.save(ct);
+    ct.id = newCt.id;
   }
 
-  mounted() {
+  async mounted() {
     console.dir(this.$refs.settings as HTMLElement);
+
+    this.platforms = await this.platformService.findAll();
+    if (this.platforms.length) {
+      this.platform = this.platforms[0].id;
+    }
+    this.rules = await this.cronTaskService.findAll();
   }
 }
 </script>

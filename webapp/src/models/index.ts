@@ -6,7 +6,8 @@ export class RootResource {
 export class PlatformResource extends RootResource {
     id?: number;
     name: string;
-    link: string;
+    link?: string;
+    isSelected?: boolean;
     offers?: Array<OfferResource>;
     tasks?: Array<CronTaskResource>;
 }
@@ -35,7 +36,7 @@ export class UserResource extends RootResource {
 export class CronTaskResource extends RootResource {
     id?: number;
     platform: PlatformResource;
-    user: UserResource;
+    user?: UserResource;
     cronTaskKeywords?: Array<KeywordsResource>;
 }
 

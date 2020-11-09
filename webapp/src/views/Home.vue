@@ -2,6 +2,7 @@
   <div class="home">
     <b-jumbotron
       fluid
+      class="title-platform"
       v-bind:header="FREELANCE_TITLE"
       v-bind:lead="FREELANCE_DESCRIPTION"
     >
@@ -35,11 +36,36 @@
                   Filtres
                 </h5>
               </legend>
-              <b-list-group>
-                <b-list-group-item v-for="plt in platforms" :key="plt.id">
-                  <Platform v-bind:platform="plt" />
-                </b-list-group-item>
-              </b-list-group>
+              <b-card-group class="mt-6">
+                <b-row class="mb-2">
+                  <b-card class="col-sm-12">
+                    <b-card-header class="col-sm-12">Plateformes</b-card-header>
+                    <b-card-text class="col-sm-12">
+                      <v-autocomplete
+                        prepend-icon="mdi-city"
+                        v-model="keyword"
+                        :items="platforms"
+                        :disabled="false"
+                        item-text="name"
+                        v-on:change="onChangeKeyword(keyword)"
+                        item-value="name"
+                        label="Mots-clés"
+                        dense
+                      ></v-autocomplete>
+                      <div>
+                        <b-list-group>
+                          <b-list-group-item
+                            v-for="k in $store.state.keywords"
+                            :key="k"
+                          >
+                            <Deletable v-bind:keyword="k" />
+                          </b-list-group-item>
+                        </b-list-group>
+                      </div>
+                    </b-card-text>
+                  </b-card>
+                </b-row>
+              </b-card-group>
             </fieldset>
           </section>
         </b-col>
@@ -69,22 +95,23 @@
                   Annonces
                 </h5>
               </legend>
-              <div>
-                <b-form-tags
-                  input-id="tags-basic"
-                  tag-variant="primary"
-                  tag-pills
-                  placeholder="Recherche"
-                  add-button-text="Ajouter..."
-                  v-model="search_keywords"
-                ></b-form-tags>
-              </div>
               <div
-                v-on:click="go(offer.link)"
-                v-for="offer in offers"
+                v-on:click="go(offer)"
+                v-for="offer in offers.offers"
                 :key="offer.id"
               >
                 <Offers v-bind:offer="offer" />
+              </div>
+              <div b-row>
+                <b-pagination-nav
+                  pills
+                  size="lg"
+                  v-if="offers.totalRecords"
+                  v-on:change="onPageChange"
+                  v-model="queries.cPage"
+                  v-bind:number-of-pages="offers.totalRecords"
+                  v-bind:pages="pages"
+                ></b-pagination-nav>
               </div>
             </fieldset>
           </section>
@@ -97,6 +124,11 @@
 .home {
   height: 100vh;
   overflow: auto;
+}
+
+.home .card-body,
+.home .card {
+  padding: 0px;
 }
 
 .jumbotron {
@@ -143,6 +175,16 @@ section:hover h5 span {
   cursor: pointer;
 }
 
+.title-platform h1,
+.title-platform p {
+  animation-name: title-frame;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in;
+  animation-delay: 0s;
+  animation-fill-mode: forwards;
+  transform: translateX(-500px);
+}
+
 .item-platform {
   animation-name: platform-frame;
   animation-duration: 1.9s;
@@ -159,6 +201,15 @@ section:hover h5 span {
   animation-delay: 0s;
   animation-fill-mode: forwards;
   transform: translateY(800px);
+}
+
+@keyframes title-frame {
+  from {
+    transform: translateX(-500px);
+  }
+  to {
+    transform: translateX(0px);
+  }
 }
 
 @keyframes offer-frame {
@@ -188,15 +239,23 @@ import Platform from "../components/Platform.vue";
 import { OfferModel } from "../models/Offer";
 import { PlatformModel } from "../models/Platform";
 import Offers from "../components/Offers.vue";
+import { PlatformService } from "../models/services/PlatformService";
+import { PlatformResource } from "../models/index";
+import { OfferService } from "../models/services/OfferService";
+import { OfferResource } from "../models/index";
+import { OffersPaginate } from "../models";
+import { QueryPagination } from "../models";
+import Deletable from "../components/Deletable.vue";
 
 @Component({
   components: {
     Platform,
     Offers,
+    Deletable,
   },
   methods: {
-    go(link: string) {
-      window.open(link);
+    go(offer: OfferResource) {
+      window.open(`${offer.platform.link}${offer.link}`);
     },
   },
 })
@@ -206,48 +265,89 @@ export default class Home extends Vue {
   FREELANCE_DESCRIPTION =
     "La solution dashboard de gestion d'offres de freelance";
 
-  platforms: Array<PlatformModel> = [
-    {
-      id: 1,
-      name: "Fiveer",
-      isSelected: true,
-    },
-    {
-      id: 2,
-      name: "Freelance-informatique",
-      isSelected: true,
-    },
-  ];
+  platforms: Array<PlatformResource> = [];
 
-  offers: Array<OfferModel> = [
-    {
-      id: 1,
-      title: "Développeur C#",
-      description: "Virement SEPA",
-      price: "10€",
-      link: "http://www.google.com",
-    },
-    {
-      id: 2,
-      title: "Développeur Java",
-      description: "Virement SEPA",
-      price: "60€",
-      link: "http://www.google.com",
-    },
-    {
-      id: 3,
-      title: "Développeur C++",
-      description: "Virement SEPA",
-      price: "70€",
-      link: "http://www.google.com",
-    },
-  ];
+  offers: OffersPaginate = {
+    offers: [],
+    totalRecords: 0,
+    cPage: 1,
+    perPage: 10,
+  };
+  queries: QueryPagination = {
+    cPage: 1,
+    perPage: 10,
+  };
+  pages: Array<{ link: { query: number }; text: string }> = [];
+  keyword = "";
 
-  search_keywords = [];
+  platformService: PlatformService;
+  offerService: OfferService;
 
-  mounted() {
-    console.log(this.platforms);
-    console.log(this.offers);
+  constructor() {
+    super();
+    this.platformService = new PlatformService();
+    this.offerService = new OfferService();
+  }
+
+  onEnter(keyword: string) {
+    if (!keyword || !keyword.length) {
+      return;
+    }
+    this.$store.state.keywords.push(keyword);
+    this.keyword = "";
+  }
+
+  async loadData() {
+    this.offers = await this.offerService.findAll(
+      this.queries,
+      this.$store.state.keywords
+    );
+    const nbPage = Math.floor(this.offers.totalRecords / this.offers.perPage);
+    this.pages = [];
+
+    for (let i = 1; i < nbPage + 1; i++) {
+      this.pages.push({
+        link: {
+          query: i,
+        },
+        text: i.toString(),
+      });
+    }
+  }
+
+  async onChangeKeyword(keyword: string) {
+    if (!keyword || !keyword.length) {
+      return;
+    }
+    this.$store.commit("addKeyword", keyword);
+    this.keyword = "";
+  }
+
+  async onPageChange(pageNumber: number) {
+    console.log(this);
+    this.queries.cPage = pageNumber;
+    await this.loadData();
+  }
+
+  async mounted() {
+    this.$store.commit("clearKeywords");
+    this.$store.subscribe(async (mutation, state) => {
+      if (
+        ["addKeyword", "clearKeywords", "removeKeyword"].indexOf(
+          mutation.type
+        ) > -1
+      ) {
+        await this.loadData();
+      }
+    });
+    this.platforms = await this.platformService.findAll();
+    const keywords = [];
+
+    for (let plt of this.platforms) {
+      keywords.push(plt.name);
+    }
+    this.$store.commit("makeKeywords", keywords);
+    await this.loadData();
   }
 }
 </script>

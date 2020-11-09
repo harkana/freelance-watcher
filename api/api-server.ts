@@ -22,6 +22,10 @@ export default class ApiServer {
         this.app = express();
 
         this.app.use(require("body-parser").json());
+        this.app.use((req, res, next) => {
+            res.setHeader("Access-Control-Allow-Origin", "*")
+            next();
+        });
         this.app.use("/", express.static("App"));
 
         this.mount();

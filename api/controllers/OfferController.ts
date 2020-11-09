@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Path, Post, Put, Route } from "tsoa";
+import { Body, Controller, Delete, Get, Path, Post, Put, Query, Route } from "tsoa";
 import { container } from "../container";
 import { Offer, PlatformSource } from "../models";
 import { OfferService } from "../models/services/OfferService";
 import { PlatformService } from "../models/services/PlatformService";
+import { OffersPaginate, QueryPagination } from "../resources";
 import { OfferAsm } from "../resources/asm";
 
 
@@ -20,16 +21,32 @@ export class OfferController extends Controller {
     }
 
     @Get("/")
-    async getAll() {
-        const list = await this.offerService.findAll();
+    async getAll(@Query() perPage?: number, @Query() cPage?: number, @Query() filters?: string) {
+        let filtersTab = [];
+        if (!filters){
+            filtersTab = [];
+        }
+        filtersTab = filters.split(",");
+        const query: QueryPagination = {
+            perPage,
+            cPage
+        };
+        const [list, count] = await this.offerService.findAll(query, filtersTab);
         const asm = new OfferAsm();
         const resources = list.map((offer) => {
             const resource = asm.toResource(offer);
 
             asm.withPlatform(resource, offer);
             return (resource);
-        })
-        return (resources);
+        });
+        const paginate: OffersPaginate = {
+            offers: resources,
+            totalRecords: count,
+            perPage: query.perPage,
+            cPage: query.cPage
+        };
+
+        return (paginate);
     }
 
     @Get("/{offerId}")
