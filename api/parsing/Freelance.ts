@@ -32,7 +32,7 @@ export class Freelance {
         this.selectedPlatform = str;
     }
 
-    async bootstrap() {
+    bootstrap() {
         try {
             const platforms = await this.platformService.findAll();
 
@@ -50,8 +50,9 @@ export class Freelance {
             }
             for (let parser of this.parsers) {
                 try {
-                    await parser.bootstrap();
-                    await parser.run();
+                    parser.bootstrap().then(() => {
+                        return (parser.run());
+                    });
                 }
                 catch (e) {
                     console.log(e.message);
