@@ -72,15 +72,19 @@ export class CronTaskController extends Controller {
             toupdated.platform.name = cronTask.platform.name;
         }
         if (cronTask.user) {
+            let hasUser = false;
             if (cronTask.user.id) {
                 toupdated.user = await this.userService.findOne(cronTask.user.id);
+                if (toupdated.user){
+                    hasUser = true;
+                }
             }
-            else {
+            if (!hasUser){
                 toupdated.user = new User();
+                toupdated.user.email = cronTask.user.email;
+                toupdated.user.password = cronTask.user.password;
+                toupdated.user.pseudo = cronTask.user.pseudo;
             }
-            toupdated.user.email = cronTask.user.email;
-            toupdated.user.password = cronTask.user.password;
-            toupdated.user.pseudo = cronTask.user.pseudo;
         }
         if (cronTask.cronTaskKeywords && cronTask.cronTaskKeywords.length) {
             const keywords = cronTask.cronTaskKeywords;
@@ -122,15 +126,19 @@ export class CronTaskController extends Controller {
             tosaved.platform.name = cronTask.platform.name;
         }
         if (cronTask.user) {
+            let hasUser = false;
             if (cronTask.user.id) {
                 tosaved.user = await this.userService.findOne(cronTask.user.id);
+                if (tosaved.user){
+                    hasUser = true;
+                }
             }
-            else {
+            if (!hasUser){
                 tosaved.user = new User();
+                tosaved.user.email = cronTask.user.email;
+                tosaved.user.password = cronTask.user.password;
+                tosaved.user.pseudo = cronTask.user.pseudo;
             }
-            tosaved.user.email = cronTask.user.email;
-            tosaved.user.password = cronTask.user.password;
-            tosaved.user.pseudo = cronTask.user.pseudo;
         }
         if (cronTask.cronTaskKeywords && cronTask.cronTaskKeywords.length) {
             const keywords = await cronTask.cronTaskKeywords;

@@ -201,7 +201,10 @@ export default class Settings extends Vue {
     if (!rule) {
       return;
     }
-    const keywords = rule.cronTaskKeywords;
+    let keywords = rule.cronTaskKeywords;
+    if (!keywords){
+      keywords = [];
+    }
     let flag = false;
 
     for (let keyword of keywords) {
@@ -213,17 +216,22 @@ export default class Settings extends Vue {
       return;
     }
     const keyword = queries[index].toString();
-
-    try {
-    } catch (e) {
-      console.log(e.message);
+    if (!keyword || !keyword.length){
+      return;
     }
     const keywordResource = new KeywordsResource();
 
-    keywordResource.keyword = queries[index];
-    keywordResource.cronTask = rule;
+    keywordResource.keyword = keyword;
+    keywordResource.cronTask = {
+      id: rule.id,
+      platform: rule.platform,
+      user: rule.user
+    };
     const saved = await this.keywordService.save(keywordResource);
     console.log(saved);
+    if (!rule.cronTaskKeywords){
+      rule.cronTaskKeywords = [];
+    }
     rule.cronTaskKeywords.push(saved);
     queries[index] = "";
     console.log(this.rules);
@@ -261,8 +269,7 @@ export default class Settings extends Vue {
         pseudo: "test",
         password: "test",
         email: "azerty123"
-      },
-      cronTaskKeywords: [],
+      }
     };
     this.rules.push(ct);
     const ctE: CronTaskResource = ct;
@@ -278,6 +285,7 @@ export default class Settings extends Vue {
       this.platform = this.platforms[0].id;
     }
     this.rules = await this.cronTaskService.findAll();
+    console.log(this.rules);
   }
 }
 </script>

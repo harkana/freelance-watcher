@@ -117,11 +117,15 @@ export class CronTaskKeywordsController extends Controller {
                 tosaved.cronTask.platform.link = cronTaskKeywords.cronTask.platform.link;
                 tosaved.cronTask.platform.name = cronTaskKeywords.cronTask.platform.name;
             }
+            let hasUser = false;
             if (cronTaskKeywords.cronTask.user) {
                 if (cronTaskKeywords.cronTask.user.id) {
                     tosaved.cronTask.user = await this.userService.findOne(cronTaskKeywords.cronTask.user.id);
+                    if (tosaved.cronTask.user) {
+                        hasUser = true;
+                    }
                 }
-                else {
+                if (!hasUser) {
                     tosaved.cronTask.user = new User();
                     tosaved.cronTask.user.email = cronTaskKeywords.cronTask.user.email;
                     tosaved.cronTask.user.password = cronTaskKeywords.cronTask.user.password;
@@ -129,16 +133,23 @@ export class CronTaskKeywordsController extends Controller {
                 }
             }
         }
-        const saved = await this.cronTaskKeywordsService.insert(tosaved);
-        const asm = new KeywordsAsm();
-        const resource = asm.toResource(saved);
+        try {
+            console.log(tosaved);
+            const saved = await this.cronTaskKeywordsService.insert(tosaved);
+            const asm = new KeywordsAsm();
+            const resource = asm.toResource(saved);
 
-        asm.withCronTask(resource, saved);
-        const taskAsm = new CronTaskAsm();
+            asm.withCronTask(resource, saved);
+            const taskAsm = new CronTaskAsm();
 
-        taskAsm.withPlatform(resource.cronTask, saved.cronTask);
-        taskAsm.withUser(resource.cronTask, saved.cronTask);
-        return (resource);
+            taskAsm.withPlatform(resource.cronTask, saved.cronTask);
+            taskAsm.withUser(resource.cronTask, saved.cronTask);
+            return (resource);
+        }
+        catch (e) {
+            console.log(e.message);
+            return (null);
+        }
     }
 
 }
