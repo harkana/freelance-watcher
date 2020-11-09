@@ -38,6 +38,7 @@ export class Parse404Works implements AbstractParse {
 
     async eachPage(plt: PlatformSource, uri: string) {
         const response = await axios.get(`${plt.link}${uri}`);
+        console.log(response.status);
         const data = await response.data;
         const $ = cheerio.load(data);
         const offer = new Offer();

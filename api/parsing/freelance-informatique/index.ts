@@ -73,6 +73,7 @@ export default class ParseFreelanceInformatique implements AbstractParse {
             responseType: "arraybuffer"
         })
         const responseBody = await response.data;
+        console.log(response.status);
         const data = decode(responseBody, "ISO-8859-1");
         const $ = cheerio.load(data, { decodeEntities: false });
         const tab = $(".careerfy-job-listing").find(".careerfy-column-12").toArray();
@@ -140,6 +141,7 @@ export default class ParseFreelanceInformatique implements AbstractParse {
                 }
             }
         }
+        console.log(keywords);
         for (let keyword of keywords) {
             this.currentPage = 1;
             await this.request(plt, keyword);

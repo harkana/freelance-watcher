@@ -48,7 +48,6 @@ export class Freelance {
                     }
                 }
             }
-            console.log(this.parsers);
             for (let parser of this.parsers) {
                 try {
                     await parser.bootstrap();
