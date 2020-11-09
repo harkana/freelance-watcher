@@ -293,8 +293,10 @@ export default class Home extends Vue {
     if (!keyword || !keyword.length) {
       return;
     }
-    this.$store.state.keywords.push(keyword);
-    this.keyword = "";
+    if (this.$store.state.keywords.indexOf(keyword) == -1) {
+      this.$store.state.keywords.push(keyword);
+      this.keyword = "";
+    }
   }
 
   async loadData() {
