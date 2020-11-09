@@ -6,6 +6,9 @@ import { container } from "../container";
 import { PlatformService } from "../models/services/PlatformService";
 import { PlatformServiceImpl } from "../models/services/impl/PlatformService";
 import { AbstractParse } from "./AbstractParse";
+import { createConnection } from "typeorm";
+import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
+import dotenv from "dotenv";
 
 const arr = [
     Parse404Works,
