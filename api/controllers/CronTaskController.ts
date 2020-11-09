@@ -4,6 +4,7 @@ import { CronTask, CronTaskKeywords, PlatformSource, User } from "../models";
 import { CronTaskService } from "../models/services/CronTaskService";
 import { PlatformService } from "../models/services/PlatformService";
 import { UserService } from "../models/services/UserService";
+import { CronTaskResource, UserResource } from "../resources";
 import { CronTaskAsm } from "../resources/asm";
 
 
@@ -56,7 +57,7 @@ export class CronTaskController extends Controller {
     }
 
     @Put("/")
-    async update(@Body() cronTask: CronTask) {
+    async update(@Body() cronTask: CronTaskResource) {
         const toupdated = new CronTask();
 
         toupdated.id = cronTask.id;
@@ -82,18 +83,18 @@ export class CronTaskController extends Controller {
             toupdated.user.pseudo = cronTask.user.pseudo;
         }
         if (cronTask.cronTaskKeywords && cronTask.cronTaskKeywords.length) {
-            const keywords = await cronTask.cronTaskKeywords;
-            const crks = [];
+            const keywords = cronTask.cronTaskKeywords;
+            const entities = [];
 
-            for (let keyword of keywords) {
-                const crk = new CronTaskKeywords();
+            for (let keyword of keywords){
+                const cronTaskKeyword = new CronTaskKeywords();
 
-                crk.id = keyword.id;
-                crk.keyword = keyword.keyword;
-                crk.cronTask = toupdated;
-                crks.push(crk);
+                cronTaskKeyword.id = keyword.id;
+                cronTaskKeyword.keyword = keyword.keyword;
+                cronTaskKeyword.cronTask = toupdated;
+                entities.push(cronTaskKeyword);
             }
-            toupdated.cronTaskKeywords = crks;
+            toupdated.cronTaskKeywords = entities;
         }
         const updated = await this.cronTaskService.update(toupdated);
         const asm = new CronTaskAsm();

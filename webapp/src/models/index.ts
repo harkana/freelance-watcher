@@ -27,9 +27,9 @@ export class OfferResource extends RootResource {
 
 export class UserResource extends RootResource {
     id?: number;
-    pseudo: string;
-    email: string;
-    password: string;
+    pseudo?: string;
+    email?: string;
+    password?: string;
     tasks?: Array<CronTaskResource>;
 }
 
@@ -42,7 +42,7 @@ export class CronTaskResource extends RootResource {
 
 export class KeywordsResource extends RootResource {
     id?: number;
-    cronTask: CronTaskResource;
+    cronTask?: CronTaskResource;
     keyword: string;
 }
 

@@ -146,7 +146,8 @@ export class CronTask extends RootEntity {
     user: User;
 
     @OneToMany(_ => CronTaskKeywords, cronTaskKeywords => cronTaskKeywords.cronTask, {
-        lazy: true
+        lazy: true,
+        cascade: ["insert", "update"]
     })
     cronTaskKeywords?: Array<CronTaskKeywords>;
 

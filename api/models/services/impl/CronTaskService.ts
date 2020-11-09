@@ -1,13 +1,17 @@
 import { EntityManager, getManager } from "typeorm";
 import { CronTask } from "../..";
+import { CronTaskKeywordsService } from "../CronTaskKeywordsService";
 import { CronTaskService } from "../CronTaskService";
+import { CronTaskKeywordsServiceImpl } from "./CronTaskKeywordsService";
 
 export class CronTaskServiceImpl implements CronTaskService {
 
     private entityManager: EntityManager;
+    private keywordService: CronTaskKeywordsService;
 
     constructor() {
         this.entityManager = getManager('app');
+        this.keywordService = new CronTaskKeywordsServiceImpl();
     }
 
     async findAll(): Promise<CronTask[]> {
@@ -15,7 +19,7 @@ export class CronTaskServiceImpl implements CronTaskService {
 
         return (tasks);
     }
-    
+
     async insert(cronTask: CronTask): Promise<CronTask> {
         return (await this.entityManager.save(cronTask));
     }
@@ -31,9 +35,20 @@ export class CronTaskServiceImpl implements CronTaskService {
     }
 
     async delete(cronTask: CronTask): Promise<boolean> {
-        const result = await this.entityManager.delete(CronTask, cronTask.id);
+        try {
+            const keywords = await cronTask.cronTaskKeywords;
 
-        return (result.affected > 0);
+            for (let keyword of keywords) {
+                this.keywordService.delete(keyword);
+            }
+            const result = await this.entityManager.delete(CronTask, cronTask.id);
+
+            return (result.affected > 0);
+        }
+        catch (e) {
+            return (false);
+        }
+
     }
-    
+
 }

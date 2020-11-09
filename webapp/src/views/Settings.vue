@@ -54,9 +54,9 @@
             <div
               class="rule-holder row"
               v-for="(rule, index) in rules"
-              :key="rule.id"
+              :key="index"
             >
-              <span class="col-1" v-on:click="deleteRule(rule)">
+              <span class="col-1" v-on:click="deleteRule(rule.id)">
                 <svg
                   width="1em"
                   height="1em"
@@ -76,7 +76,7 @@
                   <div>
                     <v-text-field
                       label="Mots-clés"
-                      v-on:keyup.enter="onEnter(queries, index)"
+                      v-on:keydown.enter="onEnter(queries, index)"
                       v-model="queries[index]"
                     ></v-text-field>
                   </div>
@@ -163,6 +163,7 @@ import { PlatformResource } from "../models/index";
 import { CronTaskResource, KeywordsResource } from "../models/index";
 import { PlatformService } from "../models/services/PlatformService";
 import { CronTaskService } from "../models/services/CronTaskService";
+import { KeywordService } from "../models/services/KeywordService";
 
 @Component
 export default class Settings extends Vue {
@@ -172,14 +173,16 @@ export default class Settings extends Vue {
   platforms: Array<PlatformResource> = [];
   platformService: PlatformService;
   cronTaskService: CronTaskService;
+  keywordService: KeywordService;
   platform?: number = 0;
   isUpdating = false;
-  queries: Array<string> = [""];
+  queries: any = {};
 
   constructor() {
     super();
     this.platformService = new PlatformService();
     this.cronTaskService = new CronTaskService();
+    this.keywordService = new KeywordService();
   }
 
   @Watch("queries")
@@ -192,32 +195,46 @@ export default class Settings extends Vue {
     console.log(this.platform);
   }
 
-  async onEnter(queries: Array<string>, index: number) {
+  async onEnter(queries: any, index: number) {
     const rule: CronTaskResource = this.rules[index];
-
+    console.log(rule);
     if (!rule) {
       return;
     }
-    if (
-      rule.cronTaskKeywords.findIndex((crk) => {
-        return queries[index].indexOf(crk.keyword) > -1;
-      }) === -1
-    ) {
-      rule.cronTaskKeywords.push({
-        keyword: queries[index].slice(),
-        cronTask: rule,
-      });
-      queries[index] = "";
+    const keywords = rule.cronTaskKeywords;
+    let flag = false;
+
+    for (let keyword of keywords) {
+      if (keyword.keyword === queries[index]) {
+        flag = true;
+      }
     }
-    await this.cronTaskService.update(rule);
+    if (flag) {
+      return;
+    }
+    const keyword = queries[index].toString();
+
+    try {
+    } catch (e) {
+      console.log(e.message);
+    }
+    const keywordResource = new KeywordsResource();
+
+    keywordResource.keyword = queries[index];
+    keywordResource.cronTask = rule;
+    const saved = await this.keywordService.save(keywordResource);
+    console.log(saved);
+    rule.cronTaskKeywords.push(saved);
+    queries[index] = "";
+    console.log(this.rules);
   }
 
-  async deleteRule(rule: CronTaskResource) {
-    const deleted = await this.cronTaskService.delete(rule.id);
+  async deleteRule(id: number) {
+    const deleted = await this.cronTaskService.delete(id);
 
     if (deleted) {
       this.rules = this.rules.filter((r) => {
-        return r.id !== rule.id;
+        return r.id !== id;
       });
     }
   }
@@ -232,11 +249,21 @@ export default class Settings extends Vue {
     if (!plt) {
       return;
     }
+    for (let rule of this.rules) {
+      if (rule.platform.id === plt.id) {
+        return;
+      }
+    }
     const ct: CronTaskResource = {
       platform: plt,
+      user: {
+        id: 1,
+        pseudo: "test",
+        password: "test",
+        email: "azerty123"
+      },
       cronTaskKeywords: [],
     };
-
     this.rules.push(ct);
     const ctE: CronTaskResource = ct;
     const newCt = await this.cronTaskService.save(ct);

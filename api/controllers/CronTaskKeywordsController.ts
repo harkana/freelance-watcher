@@ -6,7 +6,7 @@ import { CronTaskKeywordsService } from "../models/services/CronTaskKeywordsServ
 import { CronTaskService } from "../models/services/CronTaskService";
 import { PlatformService } from "../models/services/PlatformService";
 import { UserService } from "../models/services/UserService";
-import { KeywordsAsm } from "../resources/asm";
+import { CronTaskAsm, KeywordsAsm } from "../resources/asm";
 
 
 @Route("/cronTaskKeywords")
@@ -81,10 +81,10 @@ export class CronTaskKeywordsController extends Controller {
                 }
                 else {
                     toupdated.cronTask.user = new User();
+                    toupdated.cronTask.user.email = cronTaskKeywords.cronTask.user.email;
+                    toupdated.cronTask.user.password = cronTaskKeywords.cronTask.user.password;
+                    toupdated.cronTask.user.pseudo = cronTaskKeywords.cronTask.user.pseudo;
                 }
-                toupdated.cronTask.user.email = cronTaskKeywords.cronTask.user.email;
-                toupdated.cronTask.user.password = cronTaskKeywords.cronTask.user.password;
-                toupdated.cronTask.user.pseudo = cronTaskKeywords.cronTask.user.pseudo;
             }
         }
         const updated = await this.cronTaskKeywordsService.update(toupdated);
@@ -123,10 +123,10 @@ export class CronTaskKeywordsController extends Controller {
                 }
                 else {
                     tosaved.cronTask.user = new User();
+                    tosaved.cronTask.user.email = cronTaskKeywords.cronTask.user.email;
+                    tosaved.cronTask.user.password = cronTaskKeywords.cronTask.user.password;
+                    tosaved.cronTask.user.pseudo = cronTaskKeywords.cronTask.user.pseudo;
                 }
-                tosaved.cronTask.user.email = cronTaskKeywords.cronTask.user.email;
-                tosaved.cronTask.user.password = cronTaskKeywords.cronTask.user.password;
-                tosaved.cronTask.user.pseudo = cronTaskKeywords.cronTask.user.pseudo;
             }
         }
         const saved = await this.cronTaskKeywordsService.insert(tosaved);
@@ -134,6 +134,10 @@ export class CronTaskKeywordsController extends Controller {
         const resource = asm.toResource(saved);
 
         asm.withCronTask(resource, saved);
+        const taskAsm = new CronTaskAsm();
+
+        taskAsm.withPlatform(resource.cronTask, saved.cronTask);
+        taskAsm.withUser(resource.cronTask, saved.cronTask);
         return (resource);
     }
 
