@@ -48,12 +48,13 @@ export class Freelance {
                     }
                 }
             }
+            console.log(this.parsers);
             for (let parser of this.parsers) {
                 try {
                     await parser.bootstrap();
                     await parser.run();
                 }
-                catch (e){
+                catch (e) {
                     console.log(e.message);
                 }
             }

@@ -19,6 +19,7 @@ app.get('/start_scheduler', (req: express.Request, res: express.Response) => {
     schedule.scheduleJob(uid, {
         rule: "*/2 * * * *"
     }, async () => {
+        console.log("enter");
         const freelance = new Freelance();
 
         if (name) {
