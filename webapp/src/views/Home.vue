@@ -321,6 +321,9 @@ export default class Home extends Vue {
     if (!keyword || !keyword.length) {
       return;
     }
+    if (this.$store.state.keywords.indexOf(keyword) !== -1) {
+      return;
+    }
     this.$store.commit("addKeyword", keyword);
     this.keyword = "";
   }
