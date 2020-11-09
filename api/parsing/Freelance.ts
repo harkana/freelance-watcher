@@ -32,7 +32,7 @@ export class Freelance {
         this.selectedPlatform = str;
     }
 
-    bootstrap() {
+    async bootstrap() {
         try {
             const platforms = await this.platformService.findAll();
 
