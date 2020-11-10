@@ -107,8 +107,8 @@
                   pills
                   size="lg"
                   v-if="offers.totalRecords"
-                  v-on:change="onPageChange"
                   v-model="queries.cPage"
+                  v-on:change="onPageChange"
                   v-bind:number-of-pages="offers.totalRecords"
                   v-bind:pages="pages"
                 ></b-pagination-nav>
@@ -234,7 +234,7 @@ section:hover h5 span {
 </style>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import Platform from "../components/Platform.vue";
 import { OfferModel } from "../models/Offer";
 import { PlatformModel } from "../models/Platform";
@@ -304,10 +304,11 @@ export default class Home extends Vue {
       this.queries,
       this.$store.state.keywords
     );
-    const nbPage = Math.floor(this.offers.totalRecords / this.offers.perPage);
+    const nbPage =
+      Math.ceil(this.offers.totalRecords / this.offers.perPage) + 1;
     this.pages = [];
 
-    for (let i = 1; i < nbPage + 1; i++) {
+    for (let i = 1; i < nbPage; i++) {
       this.pages.push({
         link: {
           query: i,
@@ -329,8 +330,8 @@ export default class Home extends Vue {
   }
 
   async onPageChange(pageNumber: number) {
-    console.log(this);
     this.queries.cPage = pageNumber;
+    console.log(pageNumber);
     await this.loadData();
   }
 
@@ -342,6 +343,7 @@ export default class Home extends Vue {
           mutation.type
         ) > -1
       ) {
+        this.queries.cPage = 1;
         await this.loadData();
       }
     });
