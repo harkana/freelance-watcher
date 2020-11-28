@@ -86,7 +86,7 @@ export default class ParseFreelanceInformatique implements AbstractParse {
             const descEl = $(item).find('.description');
             offer.description = descEl.text();
             offer.platform = plt;
-            offer.targetId = offer.link;
+            offer.targetId = `${plt.link}${offer.link}`;
             const li = $(item).find(".careerfy-featured-listing-options li").toArray();
             for (let liItem of li) {
                 const titleItem = $(liItem).attr("title");

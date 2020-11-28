@@ -14,7 +14,6 @@ const arr = [
     Parse404Works,
     ParseKicklox,
     ParseFreelanceInformatique,
-    ParseFiverr
 ];
 
 export class Freelance {

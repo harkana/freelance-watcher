@@ -46,7 +46,7 @@ export default class ParseKicklox implements AbstractParse {
             offer.description = $(elArr[1]).text();
             offer.link = $(item).find('.make-column-clickable-elementor').attr("data-column-clickable");
             offer.platform = plt;
-            offer.targetId = offer.link;
+            offer.targetId = `${offer.link}`;
             let flag = false;
             for (let keyword of keywords) {
                 if (offer.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
